@@ -200,6 +200,7 @@ if rule_violation == 1 || goal_violation == 1
 else
     is_satisfied = 1;
     disp('Reach-SDP Satisfied');
+    return
 end
 
 hold on;
@@ -208,3 +209,4 @@ axis tight;
 
 xlabel('$x_1$','Interpreter','latex');
 ylabel('$x_2$','Interpreter','latex');
+
