@@ -1,7 +1,5 @@
-function is_satisfied = rsdp()
+function is_satisfied = rsdp(A, B, X0_b, avoid_x, avoid_y, goal_x, goal_y)
 %% Reach-SDP with Forward Reachability
-clear all; clc
-close all;
 addpath('./util');
 addpath('./output');
 addpath('C:/Program Files/Mosek/9.3/toolbox/R2015a');
@@ -9,16 +7,13 @@ addpath('C:/Program Files/Mosek/9.3/toolbox/R2015aom');
 
 %% System Parameters
 % double integrator system (ts = 1.0)
-A = [-0.5 0; 0.1 -0.2];
-B = eye(2);
+% A = [-0.5 0; 0.1 -0.2];
+% B = eye(2);
 
 % uub - input upper bound?
 % ulb - input lower bound?
 sys.uub =  10;
 sys.ulb = -10;
-
-% Load trained neural network controller from PyTorch
-% load nnmpc_nets_di_1
 load mnist_weights
 
 C = eye(2);
@@ -63,8 +58,8 @@ net_p.biases = biases_p;
 
 %% Setup
 % initial set
-%X0_b = [1.5; -1.0; 2.5; -2.0];
-X0_b = [3.0; -2.5; 0.25; 0.25];
+% X0_b = [1.5; -1.0; 2.5; -2.0];
+% X0_b = [3.0; -2.5; 0.25; 0.25];
 
 X0_poly = Polyhedron([1 0; -1 0; 0 1; 0 -1], X0_b);
 X0 = X0_poly.outerApprox; % normalize the A matrix
@@ -114,7 +109,6 @@ options.repeated = 0;
 
 
 for i = 1:length(X0_vec)
-
     % polytopic initial set
     input_set  = X0_vec(i);
     poly_seq_vec   = X0_vec(i);
@@ -166,16 +160,13 @@ end
 
 % Checking if the aviod set is violated during the procedure
 % also check if final goal is reached
-avoid_x = [0.5 0.5 1 1];
+%avoid_x = [0.5 0.5 1 1];
 %avoid_y = [-0.4 -0.8 -0.8 -0.4];
-avoid_y = [0 -0.1 -0.1 0];
+%goal_x= [0.95 1.05 1.05 0.95];
+%goal_y= [0.98 0.98 1.02 1.02];
+
 avoid_set = polyshape(avoid_x,avoid_y);
 plot(avoid_set);
-
-% goal_x = [-0.1 0.1 0.05 -0.05];
-% goal_y = [-0.05 0.05 0.05 -0.05];
-goal_x= [0.95 1.05 1.05 0.95];
-goal_y= [0.98 0.98 1.02 1.02];
 goal_set = polyshape(goal_x, goal_y);
 plot(goal_set);
 

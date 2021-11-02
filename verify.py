@@ -8,11 +8,10 @@ def main():
     # Run multi_MBA code to get detailed information for each sub-task
     te.run_test()
 
-
-
     eng = matlab.engine.start_matlab()
-    # A = matlab.double([[-0.5, 0], [0.1, -0.2]])
-    # B = matlab.double([[0.5], [0.9]])
+    A = matlab.double([[-0.5, 0], [0.1, -0.2]])
+    B = matlab.double([[1, 0], [0, 1]])
+    init_set = matlab.double()
     # eng.main(nargout=0)
     eng.quit()
 
