@@ -1,4 +1,4 @@
-function is_satisfied = rsdp(A, B, X0_b, avoid_x, avoid_y, goal_x, goal_y)
+function [is_satisfied, FRS_V_bd] = rsdp(A, B, X0_poly, avoid_x, avoid_y, goal_x, goal_y)
 %% Reach-SDP with Forward Reachability
 addpath('./util');
 addpath('./output');
@@ -61,12 +61,15 @@ net_p.biases = biases_p;
 % X0_b = [1.5; -1.0; 2.5; -2.0];
 % X0_b = [3.0; -2.5; 0.25; 0.25];
 
-X0_poly = Polyhedron([1 0; -1 0; 0 1; 0 -1], X0_b);
+% X0_poly = Polyhedron([1 0; -1 0; 0 1; 0 -1], X0_b);
+X0_poly = Polyhedron(X0_poly);
+
 X0 = X0_poly.outerApprox; % normalize the A matrix
 X0_vec = X0;
 
-dx = 0.02; % shrink the tube for better visualization
-X0_poly_s = Polyhedron([1 0; -1 0; 0 1; 0 -1], X0_b-dx);
+% dx = 0.02; % shrink the tube for better visualization
+% X0_poly_s = Polyhedron([1 0; -1 0; 0 1; 0 -1], X0_b-dx);
+X0_poly_s = X0_poly;
 
 % reachability horizon
 N = 6;
