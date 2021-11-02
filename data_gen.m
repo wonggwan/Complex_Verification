@@ -27,7 +27,6 @@ while num>0
         % xe = [3.0; 1.0]
         % K2r = -1 * pinv(B) * (A-B*K1-I)*xe;
         % x = A*x0 + B * (-1* K1*x0 + K2r)
-
         
         % option 3
         % K2 = [3, 3];
