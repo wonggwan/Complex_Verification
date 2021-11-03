@@ -64,11 +64,11 @@ def main():
         print("\nSub-task 2: go to room 2 and avoid room 5")
         controller_2 = './output/room2.mat'
         # successful case
-        # room2_goal_x = matlab.double([2.45, 2.55, 2.55, 2.45])
-        # room2_goal_y = matlab.double([2.1, 2.1, 2.3, 2.3])
+        room2_goal_x = matlab.double([2.45, 2.55, 2.55, 2.45])
+        room2_goal_y = matlab.double([2.1, 2.1, 2.3, 2.3])
         # fail case
-        room2_goal_x = matlab.double([3.45, 3.55, 3.55, 3.45])
-        room2_goal_y = matlab.double([3.1, 3.1, 3.3, 3.3])
+        # room2_goal_x = matlab.double([3.45, 3.55, 3.55, 3.45])
+        # room2_goal_y = matlab.double([3.1, 3.1, 3.3, 3.3])
         eng = matlab.engine.start_matlab()
         result = eng.rsdp(A, B, X_poly_2, avoid_x, avoid_y, room2_goal_x, room2_goal_y, controller_2, nargout=2)
         eng.quit()

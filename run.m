@@ -21,10 +21,10 @@ controller_1 = './output/room1.mat';
 if is_satisfied_1 == 1
     disp("sub-task2: room 2")
     X0_poly_2 = FRS_V_bd_1;
-    % room2_goal_x = [2.45 2.55 2.55 2.45]; % successful case
-    % room2_goal_y = [2.1 2.1 2.3 2.3];
-    room2_goal_x = [3.45, 3.55, 3.55, 3.45];
-    room2_goal_y =[3.1, 3.1, 3.3, 3.3];
+    room2_goal_x = [2.45 2.55 2.55 2.45]; % successful case
+    room2_goal_y = [2.1 2.1 2.3 2.3];
+    % room2_goal_x = [3.45, 3.55, 3.55, 3.45];
+    % room2_goal_y =[3.1, 3.1, 3.3, 3.3];
     controller_2 = './output/room2.mat';
     [is_satisfied_2, FRS_V_bd_2] = rsdp(A, B, X0_poly_2, avoid_x, avoid_y, room2_goal_x, room2_goal_y, controller_2);
     if is_satisfied_2 == 1
