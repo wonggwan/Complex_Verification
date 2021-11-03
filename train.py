@@ -119,7 +119,7 @@ def test_model(model, test_loader):
 
 
 def main():
-    room_name = 2
+    room_name = 4
 
     train_loader, test_loader = create_data_loaders(room_name)
     net_dims = [INPUT_SIZE, 20, 10, 5, OUTPUT_SIZE]

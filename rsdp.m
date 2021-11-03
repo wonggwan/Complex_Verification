@@ -65,7 +65,8 @@ net_p.biases = biases_p;
 % X0_poly = Polyhedron([1 0; -1 0; 0 1; 0 -1], X0_b);
 X0_poly = Polyhedron(X0_poly);
 
-X0 = X0_poly.outerApprox; % normalize the A matrix
+% X0 = X0_poly.outerApprox; % normalize the A matrix
+X0 = X0_poly;
 X0_vec = X0;
 
 % dx = 0.02; % shrink the tube for better visualization
