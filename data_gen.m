@@ -1,3 +1,4 @@
+addpath('./output');
 A = [-0.5 0; 0.1 -0.2];
 % B = [0.5; 0.9];
 B= eye(2);
@@ -36,11 +37,14 @@ while num>0
         % x = A * x0 + B * u
         
         %option 4
-        r = [2.0; 1.0];
+        % r = [2.0; 1.0]; % room 1
+        r = [2.5; 2.2]; % room 2
         K2 = -1 * eye(2) * (A-B*K1-I);
         xe =  -1* inv(A-B*K1-I) * B * K2 * r;
         u =  (-1* K1*x0 + K2 * r);
         x = A*x0 + B * u
+        
+        % convertStringsToChars
         
         resx(cnt) = x(1);
         resy(cnt) = x(2);
@@ -48,8 +52,7 @@ while num>0
         x0 = x;
         num = num - 1;
         X_final = [X_final; x'];
-        %Y_final = [Y_final; u];
-        
+        % Y_final = [Y_final; u];
         Y_final = [Y_final; u']; % for option 4
         if abs(x - xe) < 1e-3
             break
@@ -65,12 +68,13 @@ end
 size(X_final)
 X_train_ri = X_final;
 y_train_ri = Y_final;
-save './output/X_train_ri.mat' X_train_ri
-save './output/y_train_ri.mat' y_train_ri
 
+% remember to change name of config before you setup
+save './output/room2_x.mat' X_train_ri
+save './output/room2_y.mat' y_train_ri
 
-load X_train_ri
-load y_train_ri
+load room2_x
+load room2_y
 
 plot(X_train_ri(:,1),X_train_ri(:,2),'ro','LineWidth',1.5)
 grid on

@@ -1,4 +1,4 @@
-function [is_satisfied, FRS_V_bd] = rsdp(A, B, X0_poly, avoid_x, avoid_y, goal_x, goal_y)
+function [is_satisfied, FRS_V_bd] = rsdp(A, B, X0_poly, avoid_x, avoid_y, goal_x, goal_y, controller_name)
 %% Reach-SDP with Forward Reachability
 addpath('./util');
 addpath('./output');
@@ -14,7 +14,8 @@ addpath('C:/Program Files/Mosek/9.3/toolbox/R2015aom');
 % ulb - input lower bound?
 sys.uub =  10;
 sys.ulb = -10;
-load mnist_weights
+% load mnist_weights
+load(controller_name)
 
 C = eye(2);
 n = size(B,1);
@@ -206,9 +207,8 @@ else
     return
 end
 
-hold on;
 grid on;
-axis tight;
+
 
 xlabel('$x_1$','Interpreter','latex');
 ylabel('$x_2$','Interpreter','latex');

@@ -1,5 +1,4 @@
-function [feas, xOpt, uOpt, JOpt] = solve_mpc(A,B,P,Q,R,N,umin,umax,...
-    xmin,xmax,Oinf,x0)
+function [feas, xOpt, uOpt, JOpt] = solve_mpc(A,B,P,Q,R,N,umin,umax,xmin,xmax,Oinf,x0)
 % Solve the MPC problem
 
 % Define system dimensions

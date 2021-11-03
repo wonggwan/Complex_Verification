@@ -63,9 +63,10 @@ def train_network(model, train_loader):
     print("\n\n Mean Loss -> {}".format(mean_loss / cnt))
 
 
-def create_data_loaders():
-    xmat = scipy.io.loadmat('./output/X_train_ri.mat')['X_train_ri']
-    ymat = scipy.io.loadmat('./output/y_train_ri.mat')['y_train_ri']
+def create_data_loaders(room_name = 1):
+    xmat = scipy.io.loadmat('output/room'+str(room_name)+'_x.mat')['X_train_ri']
+    ymat = scipy.io.loadmat('output/room'+str(room_name)+'_y.mat')['y_train_ri']
+
     class MyDataset(Dataset):
         def __init__(self, xmat, ymat):
             self.xmat = xmat
@@ -81,7 +82,8 @@ def create_data_loaders():
 
     train_set = MyDataset(xmat, ymat)
     test_set = MyDataset(xmat, ymat)
-    train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0, drop_last=True)
+    train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0,
+                                               drop_last=True)
     test_loader = torch.utils.data.DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0, drop_last=False)
     print(len(train_set))
     return train_loader, test_loader
@@ -117,17 +119,18 @@ def test_model(model, test_loader):
 
 
 def main():
-    train_loader, test_loader = create_data_loaders()
-    fname = './output/mnist_weights.mat'
+    room_name = 2
 
+    train_loader, test_loader = create_data_loaders(room_name)
     net_dims = [INPUT_SIZE, 20, 10, 5, OUTPUT_SIZE]
     model = Network(net_dims, activation=nn.ReLU).net
     model = model.cuda()
     train_network(model, train_loader)
     test_model(model, test_loader)
-    # save data to saved_weights/ directory
     weights, biases = extract_weights(model)
     data = {'weights': np.array(weights, dtype=np.object), 'biases': np.array(biases, dtype=np.object)}
+
+    fname = './output/room' + str(room_name) + '.mat'
     savemat(fname, data)
 
 

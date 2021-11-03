@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from multi_MBA.task import Task
 from multi_MBA.buchi_parse import Buchi
 from multi_MBA.workspace import Workspace
@@ -26,11 +25,8 @@ def run_test():
     Following code shows implementation of the functions in the class:
 
         buchi.update_alternate_transition(currentNBAState, nextNBAState) # command provides alternate 'truth' value that enables transition 
-
         buchi.delete_transition(currentNBAState, nextNBAState) # deletes edge in NBA if none of the actions are possible.
-
         buchi.get_next_NBA_state(currentNBAState, acceptingNBAState)  # command computes and returns next NBA state
-
         buchi.get_next_action(currentNBAState, nextNBAState) # "command to generate next action so that the above transition is enabled"
 
     '''
