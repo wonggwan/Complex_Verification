@@ -1,13 +1,16 @@
 # Define verification task
 class Task(object):
     def __init__(self):
-        self.formula = '<>e1 && <>(e2 && <>e3) && <>e4 && []!e5'
+        # self.formula = '<>e1 && <>(e2 && <>e3) && <>e4 && []!e5'
+        # self.formula = '<>e1 && <>e2 && <>e3 && <>e4 && []!e5'
+        # self.formula = '<>e1 && <>(e2 || e3) && <>e4 && []!e5'
+        self.formula = '<>e1 && <>(e2 && <>(e3 && <>e4)) && []!e5'
         self.subformula = {
-            1: ['(l1_1)', 1, 3],
-            2: ['(l2_1)', 1, 3],
-            3: ['(l3_1)', 1, 3],
-            4: ['(l4_1)', 1, 3],
-            5: ['(l5_1)', 1, 3]
+            1: ['(l1_1)', 1, 0],
+            2: ['(l2_1)', 1, 0],
+            3: ['(l3_1)', 1, 0],
+            4: ['(l4_1)', 1, 0],
+            5: ['(l5_1)', 1, 0]
         }
         # self.formula = '<>e1 && <>e2 []!e5'
         # self.subformula = {
