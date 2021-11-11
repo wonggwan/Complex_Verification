@@ -206,9 +206,8 @@ for i=1:size(c,2)
     time(i,1)= out.solvertime;
     status{i} = out.info;
     
-    message = ['method: ReachSDP ', version,'| solver: ', solver, '| bound: ', num2str(bound(i,1),'%.3f'), '| solvetime: ', num2str(time(i,1),'%.3f'), '| status: ', status{i}];
-    
-    disp(message);
+    % message = ['method: ReachSDP ', version,'| solver: ', solver, '| bound: ', num2str(bound(i,1),'%.3f'), '| solvetime: ', num2str(time(i,1),'%.3f'), '| status: ', status{i}];
+    % disp(message);
     
 end
 

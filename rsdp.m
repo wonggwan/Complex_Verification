@@ -95,7 +95,7 @@ for k = 1:N
     for x = Xg_cell{end}'
         u = net.eval(x);
         x_next = A*x + B*u;
-        x = x_next;
+        % x = x_next;
         Xg_k = [Xg_k; x_next'];
         Ug_k = [Ug_k; u(1)];
 
@@ -175,6 +175,8 @@ plot(avoid_set);
 goal_set = polyshape(goal_x, goal_y);
 plot(goal_set);
 
+cnt = 0;
+is_satisfied = 0;
 for i = 1:length(X0_vec)
     for k = 1:N+1
         FRS_V = poly_cell{1,i}(k).V;
@@ -188,25 +190,34 @@ for i = 1:length(X0_vec)
         end
         bd_x = FRS_V_bd(:,1);
         bd_y = FRS_V_bd(:,2);
-        [in, on] = inpolygon(bd_x, bd_y, goal_x, goal_y);
+        [in, ~] = inpolygon(bd_x, bd_y, goal_x, goal_y);
+
+        if k ~= 1
+            cnt = cnt + 1;
+            if numel(bd_x(~in)) ~= 0
+                goal_violation = 1;
+            else
+                goal_violation = 0;
+            end
+            if rule_violation == 1 || goal_violation == 1
+                continue;
+            else
+                is_satisfied = 1;
+                % msg = ['Reach-SDP Satisfied at step ', num2str(cnt)];
+                % disp(msg)
+                return
+            end
+        end
+        
     end
 end
 
-if numel(bd_x(~in)) ~= 0
-    goal_violation = 1;
-else
-    goal_violation = 0;
-end
-
-is_satisfied = 0;
-
-if rule_violation == 1 || goal_violation == 1
-    disp('Reach-SDP Not Satisfied');
-else
-    is_satisfied = 1;
-    disp('Reach-SDP Satisfied');
+if is_satisfied == 0
+    % disp('Reach-SDP Not Satisfied');
     return
 end
+
+
 
 grid on;
 
