@@ -36,7 +36,7 @@ while num>0
         % xe = -1* inv(A-B*K1-I) * B * K2 * r
         % x = A * x0 + B * u
         
-        %option 4
+        % option 4
         % r = [2.0; 1.0]; % room 1
         % r = [2.5; 2.2]; % room 2
         % r = [1.2; 1.4]; % room 3
@@ -45,9 +45,7 @@ while num>0
         xe =  -1* inv(A-B*K1-I) * B * K2 * r;
         u =  (-1* K1*x0 + K2 * r);
         x = A*x0 + B * u
-        
-        % convertStringsToChars
-        
+
         resx(cnt) = x(1);
         resy(cnt) = x(2);
         cnt = cnt + 1;

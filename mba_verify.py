@@ -16,7 +16,8 @@ def main():
     buchi.get_minimal_length()
     buchi.get_feasible_accepting_state()
     acceptingNBAState = buchi.buchi_graph.graph['accept'][0]
-    currentNBAState = "T0_init"
+    # currentNBAState = "T0_init"
+    currentNBAState = buchi.buchi_graph.graph['init'][0]
 
     # System Dynamics: x_{t+1} = A * x_{t} + B * u_{t}
     A = matlab.double([[-0.5, 0], [0.1, -0.2]])
@@ -58,7 +59,12 @@ def main():
 
     while currentNBAState != acceptingNBAState:
         nextNBAState = buchi.get_next_NBA_state(currentNBAState, acceptingNBAState)
+        # nextNBAState = [c for c in nextNBAState if c != currentNBAState]
+        # print("nextNBAState list -> ", nextNBAState)
+        # nextNBAState = random.choice(nextNBAState)
+        print("nextNBAState chosen -> ", nextNBAState)
         nextAction = buchi.get_next_action(currentNBAState, nextNBAState)
+        print("Next action -> {}".format(nextAction))
         ok_Action = {k: v for (k, v) in nextAction.items() if v is True}
         print("Runnable action -> {}".format(ok_Action))
         sub_task, _ = random.choice(list(ok_Action.items()))
