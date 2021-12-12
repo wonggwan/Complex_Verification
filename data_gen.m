@@ -70,8 +70,8 @@ X_train_ri = X_final;
 y_train_ri = Y_final;
 
 % remember to change name of config before you setup
-save './output/room4_x.mat' X_train_ri
-save './output/room4_y.mat' y_train_ri
+% save './output/room4_x.mat' X_train_ri
+% save './output/room4_y.mat' y_train_ri
 
 load room4_x
 load room4_y
