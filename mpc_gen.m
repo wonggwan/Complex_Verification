@@ -3,27 +3,21 @@ addpath('./util');
 addpath('./output');
 
 % Initial state x(0)
-X0=[0;0;(0*pi)/180];
+
 vk=0;
 thetak=-1.2586;
 vk=0;
-Ts=0.001;
+Ts=0.0001;
 D=zeros(3,1);
 N=10;
-Xr=[100 101 0]';
-%Xr(3)=(atan((-50-X0(2))/(-50-X0(1))));
-
-% % Define cost function and expected disturbances
-% Q=eye(3);
-% R=eye(2);
-% W=ones(1,N)';  % expected demand (this is just an example)
+Xr=[1 2 0]';
 
 % Define cost functionx| and expected disturbances
-Q=[0.00001 0 0;0 1 0;0 0 100000000];
+Q=[0.001 0 0;0 1 0;0 0 10];
 R=[0.01 0;0 100];
 W=ones(1,N)';  % expected demand (this is just an example)
 
-[A B C]=model_system(vk,thetak,Ts);
+[A, B, C]=model_system(vk,thetak,Ts);
 [Gx,Gu,Gw]=constants_mpc(A,B,D,N);
 % Build R_hat
 R_hat = kron(eye(N),R);
@@ -37,6 +31,16 @@ bx=[50; 50;50; 50];
 Au=[1 0;0 1;-1 0;0 -1];
 bu=[150; 1; 25; 1];
 
+
+
+% MPC into action
+Number = 50;
+Simlength=100;
+Xhist=[];
+Uhist=[];
+Disturb= normrnd(0.5,1,Simlength+N,1); %Longer than simulation for prediction horizon
+
+X0=[5*(1-2*rand);5*(1-2*rand);0];
 % Transform into U constraints
 Au_hat=kron(eye(N),Au);
 bu_hat=kron(ones(N,1),bu);
@@ -46,37 +50,30 @@ bx_hat=kron(ones(N,1),bx);
 % Aggregated U constraints
 AU=[Ax_hat*Gu; Au_hat];
 bU=[bx_hat-Ax_hat*Gx*X0-Ax_hat*Gw*W;bu_hat];
+for k=1:Simlength    
+% expected disturbances (force that they are different)
+W=Disturb(k:k+N-1)+0*normrnd(0,0.2,N,1); 
 
-% MPC into action
-Simlength=10000;
-Xhist=[];
-Uhist=[];
-Disturb= normrnd(0.5,1,Simlength+N,1); %Longer than simulation for prediction horizon
-for k=1:Simlength
-    
-    % expected disturbances (force that they are different)
-    W=Disturb(k:k+N-1)+0*normrnd(0,0.2,N,1); 
-    
-    % Update controller matrices for current state and disturbances (H and Au are constant)
-    [A B C]=model_system(vk,thetak,Ts);
-    [Gx,Gu,Gw]=constants_mpc(A,B,D,N);
+% Update controller matrices for current state and disturbances (H and Au are constant)
+[A B C]=model_system(vk,thetak,Ts);
+[Gx,Gu,Gw]=constants_mpc(A,B,D,N);
 
-    % Build cost function
-    H=Gu'*Q_hat*Gu+R_hat;
-    F=X0'*Gx'*Q_hat*Gu+W'*Gw'*Q_hat*Gu-kron(ones(N,1),Xr)'*Q_hat*Gu;
-    UMPC=quadprog(H,F,AU,bU);
+% Build cost function
+H=Gu'*Q_hat*Gu+R_hat;
+F=X0'*Gx'*Q_hat*Gu+W'*Gw'*Q_hat*Gu-kron(ones(N,1),Xr)'*Q_hat*Gu;
+UMPC=quadprog(H,F,AU,bU);
 
-    % Apply only first component
-    u=UMPC(1:size(B,2));
-    X1=A*X0+B*u+D*Disturb(k);
-    dx=(X1(1)-X0(1))/Ts;
-    dy=(X1(2)-X0(2))/Ts;
+% Apply only first component
+u=UMPC(1:size(B,2));
+X1=A*X0+B*u+D*Disturb(k);
+dx=(X1(1)-X0(1))/Ts;
+dy=(X1(2)-X0(2))/Ts;
 
-    X0=X1;
-    Xhist=[Xhist; X0'];
-    Uhist=[Uhist; u'];
-    
-    X0
+X0=X1;
+Xhist=[Xhist; X0'];
+Uhist=[Uhist; u'];
+
+X0
 
 end
 
