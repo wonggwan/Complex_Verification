@@ -5,6 +5,7 @@ from scipy.io import savemat
 import numpy as np
 import scipy.io
 from torch.utils.data import Dataset
+from util.train_helper import Network, extract_weights
 
 INPUT_SIZE = 2
 OUTPUT_SIZE = 2
@@ -12,33 +13,6 @@ BATCH_SIZE = 100
 NUM_EPOCHS = 100
 LEARNING_RATE = 0.001
 
-
-class Network(nn.Module):
-    def __init__(self, net_dims, activation=nn.ReLU):
-        super(Network, self).__init__()
-        layers = []
-        for i in range(len(net_dims) - 1):
-            layers.append(nn.Linear(net_dims[i], net_dims[i + 1]))
-            if i != len(net_dims) - 2:
-                layers.append(activation())
-        self.net = nn.Sequential(*layers)
-
-    def forward(self, x):
-        return self.net(x)
-
-
-def extract_weights(net):
-    weights = []
-    biases = []
-    for param_tensor in net.state_dict():
-        tensor = net.state_dict()[param_tensor].detach().cpu().numpy().astype(np.float64)
-        if 'weight' in param_tensor:
-            weights.append(tensor)
-        if 'bias' in param_tensor:
-            tensor = tensor.transpose(0)
-            tensor = tensor.reshape(-1, 1)
-            biases.append(tensor)
-    return weights, biases
 
 
 def train_network(model, train_loader):
