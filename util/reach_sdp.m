@@ -79,6 +79,7 @@ fx = input_polytope(:,end);
 dim_px = length(fx);
 
 x = sdpvar(dim_x,1);
+
 x_min = zeros(dim_x,1);
 x_max = zeros(dim_x,1);
 options = sdpsettings('solver',solver,'verbose',0);
@@ -187,13 +188,26 @@ b = sdpvar(1);
 obj = b;
 
 
+
+
 bound = nan(size(c,2),1);
 for i=1:size(c,2)
     
     cc = c(:,i);
     
-    S = [zeros(dim_x) zeros(dim_x,dim_u) Asys'*cc;zeros(dim_u,dim_x) zeros(dim_u) Bsys'*cc;cc'*Asys cc'*Bsys -2*b];
+    %size(zeros(dim_x))
+    %size(zeros(dim_x,dim_u))
+    size(Asys')
+    size(cc)
+    %size(Asys'*cc)
+    %size(zeros(dim_u,dim_x))
+    %size(zeros(dim_u))
+    %size(Bsys'*cc)
+    %size(cc'*Asys)
+    %size(-2*b)
     
+    S = [zeros(dim_x) zeros(dim_x,dim_u) Asys'*cc;zeros(dim_u,dim_x) zeros(dim_u) Bsys'*cc;cc'*Asys cc'*Bsys -2*b];
+    % size(S)
     Mout = CM_out.'*S*CM_out;
     
     

@@ -35,8 +35,8 @@ def extract_weights(net):
 
 
 def create_mpc_data_loaders(BATCH_SIZE):
-    xmat = scipy.io.loadmat('../output/quad_mpc_x.mat')['X_train_nnmpc']
-    ymat = scipy.io.loadmat('../output/quad_mpc_y.mat')['y_train_nnmpc']
+    xmat = scipy.io.loadmat('./output/quad_mpc_x.mat')['X_train_nnmpc']
+    ymat = scipy.io.loadmat('./output/quad_mpc_y.mat')['y_train_nnmpc']
 
     class MyDataset(Dataset):
         def __init__(self, xmat, ymat):
@@ -47,6 +47,7 @@ def create_mpc_data_loaders(BATCH_SIZE):
             return len(self.xmat)
 
         def __getitem__(self, index):
+            # print(self.xmat[index].shape, self.ymat[index].shape)
             image = torch.FloatTensor(self.xmat[index])
             label = torch.Tensor(np.array(self.ymat[index]))
             return image, label

@@ -5,8 +5,8 @@ from scipy.io import savemat
 import numpy as np
 from util.train_helper import Network, extract_weights, create_mpc_data_loaders
 
-INPUT_SIZE = 3
-OUTPUT_SIZE = 2
+INPUT_SIZE = 6
+OUTPUT_SIZE = 3
 BATCH_SIZE = 100
 NUM_EPOCHS = 100
 LEARNING_RATE = 0.001
@@ -38,7 +38,7 @@ def main():
     print("\n\n Mean Loss -> {}".format(mean_loss / cnt))
 
     weights, biases = extract_weights(model)
-    data = {'weights': np.array(weights, dtype=np.object), 'biases': np.array(biases, dtype=np.object)}
+    data = {'weights': np.array(weights, dtype=object), 'biases': np.array(biases, dtype=object)}
 
     fname = './output/quad_mpc.mat'
     savemat(fname, data)

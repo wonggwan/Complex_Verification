@@ -115,7 +115,8 @@ options.repeated = 0;
 
 for i = 1:length(X0_vec)
     % polytopic initial set
-    input_set  = X0_vec(i);
+    input_set  = X0_vec(i)
+    input_set.H
     poly_seq_vec   = X0_vec(i);
 
     % forward reachability

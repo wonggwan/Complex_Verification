@@ -2,18 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a428e917-299a-4a1f-a1dd-9beb8dee1e3f" name="Default Changelist" comment="Update">
-      <change afterPath="$PROJECT_DIR$/mpc_train.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/mpc_gen.m" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/train_helper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/quad_mpc.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/quad_rsdp.asv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/quad_rsdp.m" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/solve_nmpc_quad.m" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/verify.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/X_train_nnmpc.mat" beforeDir="false" afterPath="$PROJECT_DIR$/output/quad_mpc_x.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dataset_mpc.fig" beforeDir="false" afterPath="$PROJECT_DIR$/output/dataset_mpc.fig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mpc_gen.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nnmpc_nets_quad6d.mat" beforeDir="false" afterPath="$PROJECT_DIR$/output/nnmpc_nets_quad6d.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/mpc_x.mat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/mpc_y.mat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/y_train_nnmpc.mat" beforeDir="false" afterPath="$PROJECT_DIR$/output/quad_mpc_y.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generate_data_Quad6D.m" beforeDir="false" afterPath="$PROJECT_DIR$/generate_data_Quad6D.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mpc_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/quad_train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsdp.m" beforeDir="false" afterPath="$PROJECT_DIR$/rsdp.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solve_nmpc_quad.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/reach_sdp.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/reach_sdp.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/train_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/train_helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verify.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +75,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mba_verify.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="quad_train" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Complex_Verification" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="D:\Dropbox\Project\SDP_Validation\Complex_Verification\quad_train.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -148,6 +170,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.mba_verify" />
+        <item itemvalue="Python.quad_train" />
         <item itemvalue="Python.verify" />
         <item itemvalue="Python.test_code" />
         <item itemvalue="Python.train" />
@@ -254,7 +277,14 @@
       <option name="project" value="LOCAL" />
       <updated>1639786352751</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Update">
+      <created>1639867240302</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1639867240302</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

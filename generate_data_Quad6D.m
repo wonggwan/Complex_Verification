@@ -1,5 +1,7 @@
 %% Generate I/O data of a MPC controller
 clear all; close all; clc
+addpath('./util');
+addpath('./output');
 setenv('SNOPT_LICENSE','D:/Software/snopt7_matlab/snopt7.lic');
 
 %% Model and specifications

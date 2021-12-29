@@ -37,7 +37,7 @@ def main():
     r1: [2; 1]
     """
     print("\nSub-task 1: go to room 1 and avoid room 5")
-    controller_1 = './output/room1.mat'
+    controller_1 = '../output/room1.mat'
     room1_goal_x = matlab.double([1.95, 2.05, 2.05, 1.95])
     room1_goal_y = matlab.double([0.98, 0.98, 1.02, 1.02])
     eng = matlab.engine.start_matlab()
@@ -62,7 +62,7 @@ def main():
         r2: [2.5; 2.2] 
         """
         print("\nSub-task 2: go to room 2 and avoid room 5")
-        controller_2 = './output/room2.mat'
+        controller_2 = '../output/room2.mat'
         # successful case
         room2_goal_x = matlab.double([2.45, 2.55, 2.55, 2.45])
         room2_goal_y = matlab.double([2.1, 2.1, 2.3, 2.3])
@@ -86,7 +86,7 @@ def main():
             r4: [-1; -1]
             """
             print("\nSub-task 3: go to room 4 and avoid room 5")
-            controller_4 = './output/room4.mat'
+            controller_4 = '../output/room4.mat'
             room4_goal_x = matlab.double([-1.01, -0.98, -0.98, -1.01])
             room4_goal_y = matlab.double([-1.01, -1.01, -0.98, -0.98])
             eng = matlab.engine.start_matlab()
@@ -109,7 +109,7 @@ def main():
             r3: [1.2; 1.4]
             """
             print("\nSub-task 4: go to room 3 and avoid room 5")
-            controller_3 = './output/room3.mat'
+            controller_3 = '../output/room3.mat'
             room3_goal_x = matlab.double([1.18, 1.25, 1.25, 1.18])
             room3_goal_y = matlab.double([1.38, 1.38, 1.42, 1.42])
             eng = matlab.engine.start_matlab()
@@ -130,7 +130,7 @@ def main():
                 r4: [-1; -1]
                 """
                 print("\nSub-task 5: go to room 4 and avoid room 5")
-                controller_4 = './output/room4.mat'
+                controller_4 = '../output/room4.mat'
                 room4_goal_x = matlab.double([-1.01, -0.98, -0.98, -1.01])
                 room4_goal_y = matlab.double([-1.01, -1.01, -0.98, -0.98])
                 eng = matlab.engine.start_matlab()
