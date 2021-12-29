@@ -31,7 +31,7 @@ sys.ulb = [-pi/9;-pi/9;0];
 sys.uub = [ pi/9; pi/9;2*g];
 
 % Get network parameters
-% load nnmpc_nets_quad6d
+%load nnmpc_nets_quad6d
 load quad_mpc
 
 net = convert_nnmpc_to_net(weights, biases, 'relu', []);
@@ -110,22 +110,29 @@ end
 %% Plots
 ell_seq_xy = [];
 Xg_cell_xy = {};
+Xg_cell_xyz = {};
 for i = 1:N
     ell_seq_tmp = ell_seq_vec(i);
     ell_seq_xy = [ell_seq_xy projection(ell_seq_tmp,...
         [1 0 0 0 0 0; 0 1 0 0 0 0]')];
-	Xg_tmp = Xg_cell{i};
+    Xg_tmp = Xg_cell{i};
     Xg_tmp = Xg_tmp';
     Xg_cell_xy{end+1} = [Xg_tmp(:,1) Xg_tmp(:,2)];
+    Xg_cell_xyz{end+1} = [Xg_tmp(:,1) Xg_tmp(:,2) Xg_tmp(:,3)];
 end
-set(0, 'DefaultFigureRenderer', 'painters')
+
+
+avoid_set = create_3d_shape(4.5,4.7,4.5,5,2.5,2.6);
+goal_set = create_3d_shape(4,5,4.3,5,2.3,2.7);
+%goal_set = create_3d_shape(3.7,4.1,2.5,3.5,1.2,2.6);
+
 plot_interval = 1;
 plot_tube = true;
-patchelltube(ell_seq_xy, [1 0 0], '-', plot_interval, false, Xg_cell_xy)
-xlabel('t (s)')
-ylabel('p_x')
-zlabel('p_y')
-
+plotandcheck(ell_seq_xy, [1 0 0], '-', plot_interval, false,...
+            Xg_cell_xy, Xg_cell_xyz, avoid_set, goal_set)
+xlabel('p_x')
+ylabel('p_y')
+zlabel('p_z')
 
 %% Functions
 function out = proj(u, u_min, u_max)
