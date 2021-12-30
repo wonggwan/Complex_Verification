@@ -1,4 +1,6 @@
-function [is_satisfied, FRS_V_bd] = rsdp(A, B, X0_poly, avoid_x, avoid_y, goal_x, goal_y, controller_name)
+function [is_satisfied, FRS_V_bd] = rsdp(A, B, X0_poly, ...
+                                        avoid_x, avoid_y, ...
+                                        goal_x, goal_y, controller_name)
 %% Reach-SDP with Forward Reachability
 addpath('./util');
 addpath('./output');

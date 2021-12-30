@@ -1,7 +1,6 @@
 %% Reach-SDP: 6D Quadrotor Example
 
 %% System Parameters
-clear all; close all; clc
 addpath('./util')
 addpath('./output');
 addpath('C:/Program Files/Mosek/9.3/toolbox/R2015a');
@@ -13,6 +12,7 @@ Ac = [0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1; zeros(3,6)];
 Bc = [zeros(3,3); g 0 0; 0 -g 0; 0 0 1]; % u = [tan(theta) tan(phi) tau]
 Ec = [0; 0; 0; 0; 0; -1];
 ts = 0.1;
+
 sys_c = ss(Ac,Bc,eye(6),[]);
 sys_d = c2d(sys_c,ts);
 A = sys_d.A;

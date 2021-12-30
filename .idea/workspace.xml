@@ -2,20 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a428e917-299a-4a1f-a1dd-9beb8dee1e3f" name="Default Changelist" comment="Update">
-      <change afterPath="$PROJECT_DIR$/6drsdp.m" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data_gen_6d.m" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mba_verify_6d.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sample_1_run.m" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rsdp_6d.m" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generate_data_Quad6D.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_ellipsoid_Quad6D.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reach_sdp_ellipsoid.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsdp.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/constants_mpc.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/linearModel.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/model_system.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/mpc_gen.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/6drsdp.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mba_verify_6d.py" beforeDir="false" afterPath="$PROJECT_DIR$/mba_verify_6d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multi_MBA/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/multi_MBA/task.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/plotandcheck.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/plotandcheck.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/rsdp.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/rsdp.m" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +56,7 @@
       <recent name="D:\Dropbox\Project\SDP_Validation\Complex_Verification\util" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.mba_verify">
+  <component name="RunManager" selected="Python.mba_verify_6d">
     <configuration name="mba_verify" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Complex_Verification" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -76,6 +70,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mba_verify.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="mba_verify_6d" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Complex_Verification" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mba_verify_6d.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -126,27 +141,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="train" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Complex_Verification" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="D:\Dropbox\Project\SDP_Validation\Complex_Verification\train.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="verify" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Complex_Verification" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -170,11 +164,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.mba_verify_6d" />
         <item itemvalue="Python.mba_verify" />
         <item itemvalue="Python.quad_train" />
         <item itemvalue="Python.verify" />
         <item itemvalue="Python.test_code" />
-        <item itemvalue="Python.train" />
       </list>
     </recent_temporary>
   </component>
@@ -292,7 +286,21 @@
       <option name="project" value="LOCAL" />
       <updated>1640743413079</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Update">
+      <created>1640802771784</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1640802771784</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Update">
+      <created>1640802801658</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1640802801658</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

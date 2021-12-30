@@ -100,10 +100,10 @@ function plotandcheck(input, rgb, linestyle, interval, plot_tube_body, Xg_cell, 
         if rule_violation == 0 && goal_violation == 0
             is_satisfied = 1;
         end
-        message = ['Verification Process N = ', num2str(t)];
-        disp(message);
-        m2 = ['rule_violate->',num2str(rule_violation), '; goal->', num2str(goal_violation)];
-        disp(m2);
+        %message = ['Verification Process N = ', num2str(t)];
+        %disp(message);
+        %m2 = ['rule_violate->',num2str(rule_violation), '; goal->', num2str(goal_violation)];
+        %disp(m2);
     end
     hold off
     savefig('./output/Verification_6d_result.fig')
