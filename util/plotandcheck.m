@@ -1,4 +1,4 @@
-function plotandcheck(input, rgb, linestyle, interval, plot_tube_body, Xg_cell, Xg_3d, avoid_set, goal_set)
+function [is_satisfied, res_index] = plotandcheck(input, rgb, linestyle, interval, plot_tube_body, Xg_cell, Xg_3d, avoid_set, goal_set)
     linewidth = 1.5;
     ts = 0.1;
     QTOL = 1e-8;
@@ -62,6 +62,8 @@ function plotandcheck(input, rgb, linestyle, interval, plot_tube_body, Xg_cell, 
     is_satisfied = 0;
     goal_violation = 0;
     rule_violation = 0;
+    res_index = 0;
+    
     
     figure, hold on, view(3)        % Display the result
     set(gcf, 'Position', get(gcf, 'Position').*[0 0 1.5 1.5])
@@ -98,7 +100,10 @@ function plotandcheck(input, rgb, linestyle, interval, plot_tube_body, Xg_cell, 
         axis image 
         
         if rule_violation == 0 && goal_violation == 0
+            disp('Reach-SDP Satisfied');
             is_satisfied = 1;
+            res_index = t;
+            return
         end
         %message = ['Verification Process N = ', num2str(t)];
         %disp(message);
@@ -110,9 +115,6 @@ function plotandcheck(input, rgb, linestyle, interval, plot_tube_body, Xg_cell, 
     
     if is_satisfied == 0
         disp('Reach-SDP Not Satisfied');
-        return
-    else
-        disp('Reach-SDP Satisfied');
         return
     end
     

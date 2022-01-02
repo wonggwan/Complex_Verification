@@ -1,5 +1,7 @@
 %% Reach-SDP: 6D Quadrotor Example
-
+function is_satisfied = rsdp_6d(Ac, Bc, Ec, g, ts, q0, Q0, ...
+                                avoid_set_xyz, goal_set_xyz, cur_controller,...
+                                is_init)
 %% System Parameters
 addpath('./util')
 addpath('./output');
@@ -7,11 +9,11 @@ addpath('C:/Program Files/Mosek/9.3/toolbox/R2015a');
 addpath('C:/Program Files/Mosek/9.3/toolbox/R2015aom');
 
 % 6D quadrotor model (ts = 0.1).
-g = 9.81;
-Ac = [0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1; zeros(3,6)];
-Bc = [zeros(3,3); g 0 0; 0 -g 0; 0 0 1]; % u = [tan(theta) tan(phi) tau]
-Ec = [0; 0; 0; 0; 0; -1];
-ts = 0.1;
+%g = 9.81;
+%Ac = [0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1; zeros(3,6)];
+%Bc = [zeros(3,3); g 0 0; 0 -g 0; 0 0 1]; % u = [tan(theta) tan(phi) tau]
+%Ec = [0; 0; 0; 0; 0; -1];
+%ts = 0.1;
 
 sys_c = ss(Ac,Bc,eye(6),[]);
 sys_d = c2d(sys_c,ts);
@@ -32,16 +34,25 @@ sys.uub = [ pi/9; pi/9;2*g];
 
 % Get network parameters
 %load nnmpc_nets_quad6d
-load quad_mpc
+%load quad_mpc
+load(cur_controller)
 
 net = convert_nnmpc_to_net(weights, biases, 'relu', []);
 
 
 %% SDP setup
 % Initial state set.
-R = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01];
-X0_ell  = ellipsoid( [4.7; 4.7; 3.0; 0.95; 0.0; 0.0],...
-    blkdiag(R(1)^2,R(2)^2,R(3)^2,R(4)^2,R(5)^2,R(6)^2) );
+% R = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01];
+
+% First time
+R = Q0;
+
+if is_init
+    X0_ell = ellipsoid(q0, blkdiag(R(1)^2,R(2)^2,R(3)^2,R(4)^2,R(5)^2,R(6)^2));
+else
+    load next_ell
+    X0_ell = next_ell;
+end
 
 repeated = true;
 mode = 'optimization';
@@ -121,18 +132,30 @@ for i = 1:N
     Xg_cell_xyz{end+1} = [Xg_tmp(:,1) Xg_tmp(:,2) Xg_tmp(:,3)];
 end
 
+aset = avoid_set_xyz;
+gset = goal_set_xyz;
 
-avoid_set = create_3d_shape(4.5,4.7,4.5,5,2.5,2.6);
-goal_set = create_3d_shape(4,5,4.3,5,2.3,2.7);
-%goal_set = create_3d_shape(3.7,4.1,2.5,3.5,1.2,2.6);
+avoid_set = create_3d_shape(aset(1),aset(2),aset(3),aset(4),aset(5),aset(6));
+goal_set = create_3d_shape(gset(1),gset(2),gset(3),gset(4),gset(5),gset(6));
 
 plot_interval = 1;
 plot_tube = true;
-plotandcheck(ell_seq_xy, [1 0 0], '-', plot_interval, false,...
-            Xg_cell_xy, Xg_cell_xyz, avoid_set, goal_set)
+[is_satisfied, res_index] = plotandcheck(ell_seq_xy, [1 0 0], '-', plot_interval, false,...
+                            Xg_cell_xy, Xg_cell_xyz, avoid_set, goal_set);
+                        
 xlabel('p_x')
 ylabel('p_y')
 zlabel('p_z')
+
+if is_satisfied
+    next_ell = ell_seq_vec(res_index);
+else
+    next_ell = ell_seq_vec(N); %if not satisfied, return the last one
+end
+save next_ell next_ell
+return 
+
+end
 
 %% Functions
 function out = proj(u, u_min, u_max)

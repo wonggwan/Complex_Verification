@@ -9,9 +9,9 @@ addpath('C:/Program Files/Mosek/9.3/toolbox/R2015aom');
 
 % 6D quadrotor model (ts = 0.1).
 g = 9.81;
-Ac = [0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1; zeros(3,6)];
-Bc = [zeros(3,3); g 0 0; 0 -g 0; 0 0 1]; % u = [tan(theta) tan(phi) tau]
-Ec = [0; 0; 0; 0; 0; -1];
+Ac = [0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1; zeros(3,6)]
+Bc = [zeros(3,3); g 0 0; 0 -g 0; 0 0 1] % u = [tan(theta) tan(phi) tau]
+Ec = [0; 0; 0; 0; 0; -1]
 ts = 0.1;
 sys_c = ss(Ac,Bc,eye(6),[]);
 sys_d = c2d(sys_c,ts);
@@ -41,7 +41,7 @@ net = convert_nnmpc_to_net(weights, biases, 'relu', []);
 % Initial state set.
 R = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01];
 X0_ell  = ellipsoid( [4.7; 4.7; 3.0; 0.95; 0.0; 0.0],...
-    blkdiag(R(1)^2,R(2)^2,R(3)^2,R(4)^2,R(5)^2,R(6)^2) );
+    blkdiag(R(1)^2,R(2)^2,R(3)^2,R(4)^2,R(5)^2,R(6)^2) )
 
 repeated = true;
 mode = 'optimization';
@@ -111,8 +111,9 @@ end
 ell_seq_xy = [];
 Xg_cell_xy = {};
 Xg_cell_xyz = {};
+
 for i = 1:N
-    ell_seq_tmp = ell_seq_vec(i);
+    ell_seq_tmp = ell_seq_vec(i); % next state
     ell_seq_xy = [ell_seq_xy projection(ell_seq_tmp,...
         [1 0 0 0 0 0; 0 1 0 0 0 0]')];
     Xg_tmp = Xg_cell{i};
