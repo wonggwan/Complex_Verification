@@ -31,6 +31,7 @@ def train_network(model, train_loader):
             optimizer.zero_grad()
             output = model(data)
             loss = criterion(output, target)
+            optimizer.zero_grad()
             loss.backward()
             optimizer.step()
             mean_loss += loss

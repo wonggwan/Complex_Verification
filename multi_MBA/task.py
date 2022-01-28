@@ -23,7 +23,8 @@ class Task(object):
 
 class Task_6D(object):
     def __init__(self):
-        self.formula = '<>e1 && []!e5'
+        self.formula = '<>e1 && <>e2 && <>e4 && []!e5'
+        # self.formula = '<>e1 && <>e2 && []!e5'
         self.subformula = {
             1: ['(l1_1)', 1, 3],
             2: ['(l2_1)', 1, 3],

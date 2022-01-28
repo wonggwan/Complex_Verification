@@ -21,43 +21,43 @@ function [is_satisfied, res_index] = plotandcheck(input, rgb, linestyle, interva
     end
 
     % Plot tube body.
-    if plot_tube_body
-        % Approx. Reach Tube.
-        patchET = patch(surf2patch(Et,Ex,Ey,Ey*0));
-        patchET.EdgeColor = rgb;
-        patchET.FaceColor = rgb;
-        patchET.EdgeAlpha = 0;
-        patchET.FaceAlpha = 0.2;
-    end
+%     if plot_tube_body
+%         % Approx. Reach Tube.
+%         patchET = patch(surf2patch(Et,Ex,Ey,Ey*0));
+%         patchET.EdgeColor = rgb;
+%         patchET.FaceColor = rgb;
+%         patchET.EdgeAlpha = 0;
+%         patchET.FaceAlpha = 0.2;
+%     end
 
     % Plot tube boundary.
-    figure
-    hold on;
-    for t = 1:N
-        if mod(t,interval) == 1 || interval == 1
-            % Ground Truth
-            Ept_tmp = Ept_cell{t};
-            patchE  = patch( Ept_tmp(1,:),Ept_tmp(2,:),Ept_tmp(3,:),rgb);
-            patchE.EdgeColor = rgb;
-            patchE.FaceAlpha = 0;
-            patchE.LineWidth = linewidth;
-            patchE.LineStyle = linestyle;
-            
-            % Reach-SDP Result
-            if ~isempty(Xg_cell)
-                Xg = Xg_cell{t};
-                XgK = boundary(Xg(:,1),Xg(:,2),0.1);
-                Xg = Xg(XgK,:)';
-                Xgt_bd = [repmat(ts*(t-1),1,length(Xg)); Xg(1,:); Xg(2,:)];
-                plot3(Xgt_bd(1,:),Xgt_bd(2,:),Xgt_bd(3,:),'b-',...
-                    'LineWidth',linewidth)
-            end
-        end
-    end
-    grid on
-    view(90,0)
-    hold off;  
-    savefig('./output/6d_plot.fig')
+%     figure
+%     hold on;
+%     for t = 1:N
+%         if mod(t,interval) == 1 || interval == 1
+%             % Ground Truth
+%             Ept_tmp = Ept_cell{t};
+%             patchE  = patch( Ept_tmp(1,:),Ept_tmp(2,:),Ept_tmp(3,:),rgb);
+%             patchE.EdgeColor = rgb;
+%             patchE.FaceAlpha = 0;
+%             patchE.LineWidth = linewidth;
+%             patchE.LineStyle = linestyle;
+%             
+%             % Reach-SDP Result
+%             if ~isempty(Xg_cell)
+%                 Xg = Xg_cell{t};
+%                 XgK = boundary(Xg(:,1),Xg(:,2),0.1);
+%                 Xg = Xg(XgK,:)';
+%                 Xgt_bd = [repmat(ts*(t-1),1,length(Xg)); Xg(1,:); Xg(2,:)];
+%                 plot3(Xgt_bd(1,:),Xgt_bd(2,:),Xgt_bd(3,:),'b-',...
+%                     'LineWidth',linewidth)
+%             end
+%         end
+%     end
+%     grid on
+%     view(90,0)
+%     hold off;  
+%     savefig('./output/6d_plot.fig')
     
     is_satisfied = 0;
     goal_violation = 0;
@@ -76,9 +76,10 @@ function [is_satisfied, res_index] = plotandcheck(input, rgb, linestyle, interva
     patch(Sa, 'FaceColor','b', 'FaceAlpha', 0.3)
     
     for t = 1:N
-        Xg3d = Xg_3d{t};
-        Xg3dK = boundary(Xg3d(:,1),Xg3d(:,2), Xg3d(:,3));
-        Xg3dt = Xg3d(Xg3dK,:);
+        % Xg3d = Xg_3d{t};
+        Xg3 = Xg_3d{t};
+        Xg3dK = boundary(Xg3(:,1),Xg3(:,2), Xg3(:,3));
+        Xg3dt = Xg3(Xg3dK,:);
         points = Xg3dt;
         
         in1 = in_polyhedron(S, Xg3dt);

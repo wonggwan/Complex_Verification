@@ -655,10 +655,12 @@ class Buchi(object):
         self.get_minimal_length()
         self.get_feasible_accepting_state()
         if not self.buchi_graph.graph['accept']:
-            raise Exception("No more transitions to accepting state")
+            # raise Exception("No more transitions to accepting state")
+            return True
         final_state = self.buchi_graph.graph['accept'][0]
         if self.min_length[state, final_state] == np.inf:
-            raise Exception("No more transitions to accepting state")
+            # raise Exception("No more transitions to accepting state")
+            return True
 
     def get_next_NBA_state(self, curr_state, accepting_state):
         """

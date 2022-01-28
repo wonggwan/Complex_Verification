@@ -186,6 +186,17 @@ disp(message);
 q_out = -A_out^-1*b_out;
 Q_out = (A_out*A_out)^-1*mu_in^2;
 
+%% add by me in this section 
+shape_matrix = (Q_out+Q_out')/2;
+check = issymmetric(shape_matrix);
+if ~check  == 1
+    % disp('Shape Matrix is asymmetric')
+    output.solver_status = 0;
+    return
+end
+%%
+
+
 output.ell = ellipsoid(q_out,(Q_out+Q_out')/2);
 output.cpu_time = cvx_cputime;
 output.solver_status = cvx_status;

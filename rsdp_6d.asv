@@ -1,7 +1,7 @@
 %% Reach-SDP: 6D Quadrotor Example
 function is_satisfied = rsdp_6d(Ac, Bc, Ec, g, ts, q0, Q0, ...
                                 avoid_set_xyz, goal_set_xyz, cur_controller,...
-                                is_init, process_ind)
+                                is_init, task_ind)
 %% System Parameters
 addpath('./util')
 addpath('./output');
@@ -114,12 +114,10 @@ for i = 1:N
     message = ['Sequential SDP Progress: N = ', num2str(i)];
     disp(message);
     sol = reach_sdp_ellipsoid(net,input_set,repeated,verbose,sys);
-    if sol.solver_status == 0
+    %msg = ['Solver Status: ', sol.solver_status];
+	%disp(msg);
+    if sol.is_error == 1
         disp('Calculated Reach-SDP has asymmetric ellipsoid shape')
-        next_ell = X0_ell;
-        save next_ell next_ell
-        is_satisfied = 0;
-        return
     end
     input_set.set = sol.ell;
     ell_seq_vec = [ell_seq_vec sol.ell];
@@ -173,7 +171,7 @@ plot_tube = true;
 % [is_satisfied, res_index] = plotandcheck(ell_seq_xy, [1 0 0], '-', plot_interval, false,...
 %                             Xg_cell_xy, Xg_cell_xyz, avoid_set, goal_set);
 [is_satisfied, res_index] = quad_plot_check(ell_seq_xy, FRS_xyz, [1 0 0], '-', plot_interval, false,...
-                            Xg_cell_xy, avoid_set, goal_set, process_ind);
+                            Xg_cell_xy, avoid_set, goal_set, task_ind);
                         
 xlabel('p_x')
 ylabel('p_y')
