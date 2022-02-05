@@ -14,7 +14,6 @@ NUM_EPOCHS = 100
 LEARNING_RATE = 0.001
 
 
-
 def train_network(model, train_loader):
     criterion = nn.L1Loss(reduction='mean')
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
@@ -38,9 +37,9 @@ def train_network(model, train_loader):
     print("\n\n Mean Loss -> {}".format(mean_loss / cnt))
 
 
-def create_data_loaders(room_name = 1):
-    xmat = scipy.io.loadmat('output/room'+str(room_name)+'_x.mat')['X_train_ri']
-    ymat = scipy.io.loadmat('output/room'+str(room_name)+'_y.mat')['y_train_ri']
+def create_data_loaders(room_name=1):
+    xmat = scipy.io.loadmat('output/room' + str(room_name) + '_x.mat')['X_train_ri']
+    ymat = scipy.io.loadmat('output/room' + str(room_name) + '_y.mat')['y_train_ri']
 
     class MyDataset(Dataset):
         def __init__(self, xmat, ymat):
@@ -105,7 +104,7 @@ def main():
     weights, biases = extract_weights(model)
     data = {'weights': np.array(weights, dtype=np.object), 'biases': np.array(biases, dtype=np.object)}
 
-    fname = './output/room' + str(room_name) + '.mat'
+    fname = './output/controller2d/room' + str(room_name) + '.mat'
     savemat(fname, data)
 
 

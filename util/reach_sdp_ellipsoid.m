@@ -183,18 +183,18 @@ cvx_end
 message = ['Solver time: ', num2str(cvx_cputime)];
 disp(message);
 
-q_out = -A_out^-1*b_out;
-Q_out = (A_out*A_out)^-1*mu_in^2;
 
 %% add by me in this section 
-shape_matrix = (Q_out+Q_out')/2;
-check = issymmetric(shape_matrix);
-if ~check  == 1
-    % disp('Shape Matrix is asymmetric')
+check = sum(isnan(A_out(:)));
+if check  > 0
     output.solver_status = 0;
     return
 end
 %%
+
+q_out = -A_out^-1*b_out;
+A_out;
+Q_out = (A_out*A_out)^-1*mu_in^2;
 
 
 output.ell = ellipsoid(q_out,(Q_out+Q_out')/2);

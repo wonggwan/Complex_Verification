@@ -6,6 +6,7 @@ import scipy.io
 from torch.utils.data import Dataset
 import matlab.engine
 
+
 class Network(nn.Module):
     def __init__(self, net_dims, activation=nn.ReLU):
         super(Network, self).__init__()
@@ -35,10 +36,12 @@ def extract_weights(net):
 
 
 def create_mpc_data_loaders(BATCH_SIZE):
-    xmat = scipy.io.loadmat('./output/quad_mpc_x_333000.mat')['X_train_nnmpc']
-    ymat = scipy.io.loadmat('./output/quad_mpc_y_333000.mat')['y_train_nnmpc']
-    # xmat = scipy.io.loadmat('./output/quad222000x.mat')['X_train_nnmpc']
-    # ymat = scipy.io.loadmat('./output/quad222000y.mat')['y_train_nnmpc']
+    xmat = scipy.io.loadmat('./output/quad_mpc_x_222000.mat')['X_train_nnmpc']
+    ymat = scipy.io.loadmat('./output/quad_mpc_y_222000.mat')['y_train_nnmpc']
+
+    # reduce size of dataset
+    xmat = xmat[:1000]
+    ymat = ymat[:1000]
 
     class MyDataset(Dataset):
         def __init__(self, xmat, ymat):
@@ -57,7 +60,7 @@ def create_mpc_data_loaders(BATCH_SIZE):
     train_set = MyDataset(xmat, ymat)
     test_set = MyDataset(xmat, ymat)
     train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0,
-                                               drop_last=True)
+                                               drop_last=False)
     test_loader = torch.utils.data.DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0, drop_last=False)
     print(len(train_set))
     return train_loader, test_loader
@@ -70,7 +73,7 @@ def train_6d_ver1(BATCH_SIZE, INPUT_SIZE, OUTPUT_SIZE, NUM_EPOCHS, optimizer):
     #         print(element)
     #     print("\n")
 
-    net_dims = [INPUT_SIZE, 35, 35,  OUTPUT_SIZE]
+    net_dims = [INPUT_SIZE, 35, 35, OUTPUT_SIZE]
     model = Network(net_dims, activation=nn.ReLU).net
     model = model.cuda()
 
@@ -102,7 +105,7 @@ def train_6d_ver1(BATCH_SIZE, INPUT_SIZE, OUTPUT_SIZE, NUM_EPOCHS, optimizer):
     # test_model_6d(model, test_loader)
 
 
-def test_model_6d(model, test_loader, horizon):
+def test_model_6d(model, test_loader, horizon, ts):
     model.eval()
     model.cpu()
     count = 0
@@ -111,8 +114,7 @@ def test_model_6d(model, test_loader, horizon):
 
         for data, labels in test_loader:
             print("Count -> {}".format(count))
-            if count == 3:
-                break
+
             x0 = data.detach().numpy().transpose()
             print("x0: ", x0)
 
@@ -125,12 +127,79 @@ def test_model_6d(model, test_loader, horizon):
 
                 x0_matlab = matlab.double(x0.tolist())
                 u_matlab = matlab.double(u.tolist())
-                result = eng.test_6d_controller(x0_matlab, u_matlab, nargout=1)
+                result = eng.test_6d_controller(x0_matlab, u_matlab, ts, nargout=1)
                 x = np.asarray(result)
 
                 print("\nx: ", x)
                 x0 = x
 
-            count += 1
+            break
 
     eng.quit()
+
+
+def system(x, u, ts):
+    global A, B, E
+    # ts=0.5
+    g = 9.81
+    if ts == 0.5:
+        # print("ts={}".format(ts))
+        A = torch.tensor([[1, 0, 0, 0.5, 0, 0],
+                          [0, 1, 0, 0, 0.5, 0],
+                          [0, 0, 1, 0, 0, 0.5],
+                          [0, 0, 0, 1, 0, 0],
+                          [0, 0, 0, 0, 1, 0],
+                          [0, 0, 0, 0, 0, 1]]).cuda()
+        B = torch.tensor([[1.2263, 0, 0],
+                          [0, -1.2263, 0],
+                          [0, 0, 0.125],
+                          [4.9050, 0, 0],
+                          [0, -4.9050, 0],
+                          [0, 0, 0.5]]).cuda()
+        E = torch.tensor([[0], [0], [-0.125], [0], [0], [-0.5]]).cuda()
+    elif ts == 0.2:
+        A = torch.tensor([[1, 0, 0, 0.2, 0, 0],
+                          [0, 1, 0, 0, 0.2, 0],
+                          [0, 0, 1, 0, 0, 0.2],
+                          [0, 0, 0, 1, 0, 0],
+                          [0, 0, 0, 0, 1, 0],
+                          [0, 0, 0, 0, 0, 1]]).cuda()
+        B = torch.tensor([[0.1962, 0, 0],
+                          [0, -0.1962, 0],
+                          [0, 0, 0.02],
+                          [1.962, 0, 0],
+                          [0, -1.962, 0],
+                          [0, 0, 0.2]]).cuda()
+        E = torch.tensor([[0], [0], [-0.02], [0], [0], [-0.2]]).cuda()
+    elif ts == 0.3:
+        # print("ts={}".format(ts))
+        A = torch.tensor([[1, 0, 0, 0.3, 0, 0],
+                          [0, 1, 0, 0, 0.3, 0],
+                          [0, 0, 1, 0, 0, 0.3],
+                          [0, 0, 0, 1, 0, 0],
+                          [0, 0, 0, 0, 1, 0],
+                          [0, 0, 0, 0, 0, 1]]).cuda()
+        B = torch.tensor([[0.4415, 0, 0],
+                          [0, -0.4415, 0],
+                          [0, 0, 0.045],
+                          [2.943, 0, 0],
+                          [0, -2.943, 0],
+                          [0, 0, 0.3]]).cuda()
+        E = torch.tensor([[0], [0], [-0.045], [0], [0], [-0.3]]).cuda()
+    elif ts == 0.1:
+        # print("ts={}".format(ts))
+        A = torch.tensor([[1, 0, 0, 0.1, 0, 0],
+                          [0, 1, 0, 0, 0.1, 0],
+                          [0, 0, 1, 0, 0, 0.1],
+                          [0, 0, 0, 1, 0, 0],
+                          [0, 0, 0, 0, 1, 0],
+                          [0, 0, 0, 0, 0, 1]]).cuda()
+        B = torch.tensor([[0.0491, 0, 0],
+                          [0, -0.0491, 0],
+                          [0, 0, 0.005],
+                          [0.981, 0, 0],
+                          [0, -0.981, 0],
+                          [0, 0, 0.1]]).cuda()
+        E = torch.tensor([[0], [0], [-0.005], [0], [0], [-0.1]]).cuda()
+    res = torch.matmul(A, x) + torch.matmul(B, u) + E * g
+    return res

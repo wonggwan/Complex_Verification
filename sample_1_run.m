@@ -11,21 +11,21 @@ X0_poly = [1 2; 1.5 2; 1.5 2.5; 1 2.5];
 avoid_x = [1 1.2 1.2 1];
 avoid_y = [1 1 1.2 1.2];
 
-controller_1 = './output/room1.mat';
+controller_1 = './output/controller_2d/room1.mat';
 room1_goal_x= [1.95 2.05 2.05 1.95]; % successful case
 room1_goal_y= [0.98 0.98 1.02 1.02];
 
-controller_2 = './output/room2.mat';
+controller_2 = './output/controller_2d/room2.mat';
 room2_goal_x = [2.45 2.55 2.55 2.45]; % successful case
 room2_goal_y = [2.1 2.1 2.3 2.3];
 % room2_goal_x = [3.45, 3.55, 3.55, 3.45];
 % room2_goal_y =[3.1, 3.1, 3.3, 3.3];
 
-controller_4 = './output/room4.mat';
+controller_4 = './output/controller_2d/room4.mat';
 room4_goal_x = [-1.01, -0.98, -0.98, -1.01];
 room4_goal_y = [-1.01, -1.01, -0.98, -0.98];
 
-controller_3 = './output/room3.mat';
+controller_3 = './output/controller_2d/room3.mat';
 room3_goal_x = [1.18 1.25 1.25 1.18];
 room3_goal_y = [1.38 1.38 1.42 1.42];      
 

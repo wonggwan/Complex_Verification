@@ -19,7 +19,8 @@ def main():
 
     """System model setting"""
     g = 9.81
-    ts = 0.5
+    ts = 0.3
+    sdp_iter = 12
     # Continuous A, B matrix
     Ac = matlab.double([[0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 1, 0],
@@ -36,19 +37,20 @@ def main():
     Ec = matlab.double([[0], [0], [0], [0], [0], [-1]])
 
     # Initial state set
-    q0 = matlab.double([[1.5], [1.7], [3.0], [0.95], [0], [-0.5]])
+    q0 = matlab.double([[4.1], [4.44], [4.4], [-0.5], [-0.5], [-0.5]])
+
+    # q0 = matlab.double([[2.1], [2.44], [2.4], [-0.5], [-0.5], [-0.5]])
     Q0 = matlab.double([0.05, 0.05, 0.05, 0.01, 0.01, 0.01])
     is_init = True  # The initial state set is only needed at the first time
 
     # Avoiding set and Goal set
-    avoid_set_xyz = matlab.double([1.1, 1.2, 1.1, 1.2, 1.1, 1.2])
+    avoid_set_xyz = matlab.double([1.1, 1.2, 1.1, 1.2, 1.1, 1.2]) # avoid set
 
     # room dictionary
     room_goal_dict = {
         '1': matlab.double([0.5, 1.5, 0.5, 1.5, 0.5, 1.5]),
         '2': matlab.double([1.5, 2.5, 1.5, 2.5, 1.5, 2.5]),
-        '4': matlab.double([3.5, 4.5, 3.5, 4.5, 3, 4.5])
-
+        '3': matlab.double([2.5, 3.5, 2.5, 3.5, 2.5, 4.0])
     }
 
     process_counter = 0
@@ -73,7 +75,7 @@ def main():
         cur_controller = './output/quad_mpc_' + str(room_num) + '.mat'
         result = eng.rsdp_6d(Ac, Bc, Ec, g, ts, q0, Q0,
                              avoid_set_xyz, goal_set_xyz,
-                             cur_controller, is_init, process_counter, nargout=1)
+                             cur_controller, is_init, process_counter, sdp_iter, nargout=1)
         eng.quit()
         is_init = False  # q0, Q0 and is_init will not be useful after 1st iteration
         is_satisfied = result

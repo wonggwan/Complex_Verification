@@ -75,7 +75,7 @@ def main():
         cur_room_goal_x, cur_room_goal_y = room_goal_dict[room_num][0], room_goal_dict[room_num][1]
         print("[Sub-Task {}] Current room goal:\nx -> {}\ny -> {}".format(room_num, cur_room_goal_x, cur_room_goal_y))
         print("\n[Sub-Task {}] Current starting states: {}".format(room_num, X_poly))
-        cur_controller = './output/room' + str(room_num) + '.mat'
+        cur_controller = './output/controller_2d/room' + str(room_num) + '.mat'
         result = eng.rsdp(A, B, X_poly, avoid_x, avoid_y, cur_room_goal_x, cur_room_goal_y, cur_controller, nargout=2)
         eng.quit()
         is_satisfied = result[0]

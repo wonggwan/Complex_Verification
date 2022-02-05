@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="945c93ad-fa60-4c97-b9ce-3fc1d575fb3a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/output/Figure/quad_mpc_000000.fig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/Figure/quad_mpc_111000.fig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/mpc_old/_X_train_nnmpc.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/mpc_old/_y_train_nnmpc.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/quad_mpc_x_000000.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/quad_mpc_x_111000.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/quad_mpc_x_222000.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/quad_mpc_y_000000.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/quad_mpc_y_111000.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/quad_mpc_y_222000.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/sol_A.m" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/sol_B.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Complex_Verification.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Complex_Verification.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_gen_6d.m" beforeDir="false" afterPath="$PROJECT_DIR$/data_gen_6d.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mba_verify_6d.py" beforeDir="false" afterPath="$PROJECT_DIR$/mba_verify_6d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next_ell.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/6d_plot.fig" beforeDir="false" afterPath="$PROJECT_DIR$/output/Figure/6d_plot.fig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/Verification_6d_result.fig" beforeDir="false" afterPath="$PROJECT_DIR$/output/Figure/Verification_6d_result.fig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/dataset_mpc.fig" beforeDir="false" afterPath="$PROJECT_DIR$/output/Figure/dataset_mpc.fig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/nnmpc_nets_quad6d.mat" beforeDir="false" afterPath="$PROJECT_DIR$/output/mpc_old/nnmpc_nets_quad6d.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/quad_mpc.mat" beforeDir="false" afterPath="$PROJECT_DIR$/output/mpc_old/_quad_mpc.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/quad_mpc_x.mat" beforeDir="false" afterPath="$PROJECT_DIR$/output/mpc_old/_quad_mpc_x.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/quad_mpc_y.mat" beforeDir="false" afterPath="$PROJECT_DIR$/output/mpc_old/_quad_mpc_y.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/main_6d.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/main_6d.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/solve_nmpc_quad.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/solve_nmpc_quad.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/train_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/train_helper.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="23qj1YcpU9cFPABJmkgomGam5RW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
+  </component>
+  <component name="RunManager">
+    <configuration name="mba_verify" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Complex_Verification" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mba_verify.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.mba_verify" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="945c93ad-fa60-4c97-b9ce-3fc1d575fb3a" name="Changes" comment="" />
+      <created>1642468300852</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1642468300852</updated>
+    </task>
+    <servers />
+  </component>
+</project>

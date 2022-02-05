@@ -1,12 +1,13 @@
 %% Reach-SDP: 6D Quadrotor Example
 function is_satisfied = rsdp_6d(Ac, Bc, Ec, g, ts, q0, Q0, ...
                                 avoid_set_xyz, goal_set_xyz, cur_controller,...
-                                is_init, process_ind)
+                                is_init, process_ind, sdp_iter)
 %% System Parameters
 addpath('./util')
 addpath('./output');
 addpath('C:/Program Files/Mosek/9.3/toolbox/R2015a');
 addpath('C:/Program Files/Mosek/9.3/toolbox/R2015aom');
+% mkdir ./output/Figure
 
 % 6D quadrotor model (ts = 0.1).
 %g = 9.81;
@@ -60,7 +61,7 @@ mode = 'optimization';
 verbose = false;
 
 % Reachability horizon.
-N = 8;
+N = sdp_iter;
 
 message = ['Starting FRS computation, N = ', num2str(N)];
 disp(message);
@@ -115,15 +116,18 @@ for i = 1:N
     disp(message);
     sol = reach_sdp_ellipsoid(net,input_set,repeated,verbose,sys);
     if sol.solver_status == 0
-        disp('Calculated Reach-SDP has asymmetric ellipsoid shape')
+        % disp('Calculated Reach-SDP has asymmetric ellipsoid shape')
         next_ell = X0_ell;
         save next_ell next_ell
         is_satisfied = 0;
-        return
+        % return
+        break
     end
     input_set.set = sol.ell;
     ell_seq_vec = [ell_seq_vec sol.ell];
 end
+
+ell_length = length(ell_seq_vec);
 
 
 %% Plots
@@ -131,28 +135,33 @@ ell_seq_xy = [];
 Xg_cell_xy = {};
 Xg_cell_xyz = {};
 FRS_xyz = {};
-for i = 1:N
+% for i = 1:N
+for i = 1:ell_length
     ell_seq_tmp = ell_seq_vec(i);
     ell_seq_xy = [ell_seq_xy projection(ell_seq_tmp,...
         [1 0 0 0 0 0; 0 1 0 0 0 0]')];
     
     
-    [eq,eQ] = double(ell_seq_tmp);
-    [A0,b0] = ell_to_Ab(ell_seq_tmp);
+    ell_seq_xyz = [ell_seq_xyz projection(ell_seq_tmp,...
+        [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0]')];
+    ell_3d = projection(ell_seq_tmp,[1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0]');
+    
+    [eq,eQ] = double(ell_3d);
+    Q = sqrtm(eQ+eye(3)*1e-6);
     Nsample = 20000;
-    X_sample_box = [eq(1)+R(1)*(1-2*rand(1,Nsample));
-                    eq(2)+R(2)*(1-2*rand(1,Nsample));
-                    eq(3)+R(3)*(1-2*rand(1,Nsample));
-                    eq(4)+R(4)*(1-2*rand(1,Nsample));
-                    eq(5)+R(5)*(1-2*rand(1,Nsample));
-                    eq(6)+R(6)*(1-2*rand(1,Nsample))];
+    X_sample_box = [eq(1)+Q(1,1)*(1-2*rand(1,Nsample));
+                    eq(2)+Q(2,2)*(1-2*rand(1,Nsample));
+                    eq(3)+Q(3,3)*(1-2*rand(1,Nsample))];
     FRS_xyz_tmp = [];
     for x = X_sample_box
-        if norm(A0*x+b0)<=1
+        val1 = x-eq;
+        val2 = inv(eQ)*(x-eq);
+        if dot(val1, val2) <= 1
             s = [x(1); x(2); x(3)];
             FRS_xyz_tmp = [FRS_xyz_tmp s];
         end
     end
+    
     FRS_xyz_tmp = FRS_xyz_tmp';
     FRS_xyz{end+1} = [FRS_xyz_tmp(:,1) FRS_xyz_tmp(:,2) FRS_xyz_tmp(:,3)];
     
@@ -170,10 +179,8 @@ goal_set = create_3d_shape(gset(1),gset(2),gset(3),gset(4),gset(5),gset(6));
 
 plot_interval = 1;
 plot_tube = true;
-% [is_satisfied, res_index] = plotandcheck(ell_seq_xy, [1 0 0], '-', plot_interval, false,...
-%                             Xg_cell_xy, Xg_cell_xyz, avoid_set, goal_set);
-[is_satisfied, res_index] = quad_plot_check(ell_seq_xy, FRS_xyz, [1 0 0], '-', plot_interval, false,...
-                            Xg_cell_xy, avoid_set, goal_set, process_ind);
+[is_satisfied, res_index] = quad_plot_check(ell_seq_xy, ell_seq_xyz, FRS_xyz, [1 0 0], '-', plot_interval, false,...
+                            Xg_cell_xyz, avoid_set, goal_set, process_ind);
                         
 xlabel('p_x')
 ylabel('p_y')

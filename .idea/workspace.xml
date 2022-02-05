@@ -2,36 +2,35 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="945c93ad-fa60-4c97-b9ce-3fc1d575fb3a" name="Changes" comment="Changes">
-      <change afterPath="$PROJECT_DIR$/multi_MBA/cygwin1.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/next_ell_50.mat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/next_ell_52.mat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rsdp_6d.asv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_6d_controller.m" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/sol_A.m" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/sol_B.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Complex_Verification.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Complex_Verification.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace (MSI's conflicted copy 2022-01-17).xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_gen_6d.m" beforeDir="false" afterPath="$PROJECT_DIR$/data_gen_6d.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mba_verify.py" beforeDir="false" afterPath="$PROJECT_DIR$/mba_verify.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mba_verify_6d.py" beforeDir="false" afterPath="$PROJECT_DIR$/mba_verify_6d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multi_MBA/buchi_parse.py" beforeDir="false" afterPath="$PROJECT_DIR$/multi_MBA/buchi_parse.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multi_MBA/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/multi_MBA/task.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next_ell.mat" beforeDir="false" afterPath="$PROJECT_DIR$/next_ell.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/6d_plot.fig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/Verification_6d_result.fig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/dataset_mpc.fig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/nnmpc_nets_quad6d.mat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/quad_mpc.mat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/quad_mpc_x.mat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/quad_mpc_y.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/next_ell_50.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/next_ell_52.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room1.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room1_x.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room1_y.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room2.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room2_x.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room2_y.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room3.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room3_x.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room3_y.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room4.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room4_x.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/room4_y.mat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/quad_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/quad_train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsdp_6d.asv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/rsdp_6d.m" beforeDir="false" afterPath="$PROJECT_DIR$/rsdp_6d.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sample_1_run.m" beforeDir="false" afterPath="$PROJECT_DIR$/sample_1_run.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_6d_controller.m" beforeDir="false" afterPath="$PROJECT_DIR$/test_6d_controller.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/util/main_6d.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/main_6d.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/plotandcheck.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/plotandcheck.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/util/reach_sdp_ellipsoid.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/reach_sdp_ellipsoid.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/solve_nmpc_quad.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/solve_nmpc_quad.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/util/train_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/train_helper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -141,6 +140,14 @@
       <option name="presentableId" value="Default" />
       <updated>1642468300852</updated>
     </task>
+    <task id="LOCAL-00001" summary="Changes">
+      <created>1643383195610</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1643383195610</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -160,5 +167,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes" />
   </component>
 </project>
