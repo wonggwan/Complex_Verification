@@ -7,7 +7,7 @@ setenv('SNOPT_LICENSE','D:/Software/snopt7_matlab/snopt7.lic');
 %% important Varables
 ts = 0.3; % samping rate
 N = 20; % horizon
-Xnmpc = [1;1;1;0;0;0];
+Xnmpc = [0;0;0;0;0;0];
 
 %% system dynamics
 g = 9.81;
@@ -27,19 +27,11 @@ R = eye(3);
 P = eye(6);
 
 %% normal case
-% xmax = [ 5; 5; 5; 1; 1; 1];
-% xmin = -xmax;
-%% Some changes made by me regarding xmax and xmin
-% xmax = [ 5; 5; 5; 2; 2; 2];
-% xmin = -xmax;
+xmax = [ 5; 5; 5; 1; 1; 1];
+xmin = -xmax;
 %% controller that force the drone to stay within a region
 % xmax = [ 3.2; 3.2; 3.2; 1; 1; 1];
 % xmin = [ 2.9; 2.9; 2.9; -1; -1; -1];
-%%
-xmax = [ 3.2; 3.2; 3.2; 1; 1; 1];
-xmin = [ 2.9; 2.9; 2.9; -1; -1; -1];
-
-
 %% correct u limits
 umin = [-pi/9;-pi/9;0];
 umax = [ pi/9; pi/9;2*g];
@@ -49,22 +41,21 @@ y = [];
 count = 0;
 
 %% only when needed to add more data points
-load quad_mpc_x_333000
-load quad_mpc_y_333000
-X = X_train_nnmpc;
-y = y_train_nnmpc;
-len = height(X);
-msg = ['Current dataset size is: ', num2str(len)];
-disp(msg)
+% load quad_mpc_x_333000
+% load quad_mpc_y_333000
+% X = X_train_nnmpc;
+% y = y_train_nnmpc;
+% len = height(X);
+% msg = ['Current dataset size is: ', num2str(len)];
+% disp(msg)
 
 %% Test with rejection 
-k = 1;
-while k < 800
+k = 0;
+while k < 1500
     k
     % x0 = [3.2-rand/5; 3.2-rand/5; 3.2-rand/5; 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)];
     % select some out of distribution datapoints to enlarge the coverage of the dataset volume
-    x0 = [8*(1-2*rand); 8*(1-2*rand); 8*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)];
-    % x0 = [-3-2*rand; -5*rand; -3-2*rand; 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)];
+    x0 = [7*(1-2*rand); 7*(1-2*rand); 7*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)];
     if x0(1)<xmin(1)|| x0(1)>xmax(1) || x0(2)<xmin(2) || x0(2)>xmax(2) || x0(3)<xmin(3) || x0(3)>xmax(3)
         continue %reject this initial state
     end
@@ -150,8 +141,7 @@ save quad_mpc_y y_train_nnmpc
 %         end
 %     end
 % end
-    
-    
+  
 %     [feas, xOpt, uOpt, JOpt] = solve_nmpc_quad(ts,Q,R,N,umin,umax,xmin, xmax,x_b, Xnmpc, P);
 %     if feas == 1
 %         for j = 1:9

@@ -132,6 +132,7 @@ ell_length = length(ell_seq_vec);
 
 %% Plots
 ell_seq_xy = [];
+ell_seq_xyz = [];
 Xg_cell_xy = {};
 Xg_cell_xyz = {};
 FRS_xyz = {};

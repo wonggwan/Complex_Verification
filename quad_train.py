@@ -11,20 +11,14 @@ INPUT_SIZE = 6
 OUTPUT_SIZE = 3
 HORIZON = 20
 BATCH_SIZE = HORIZON
-NUM_EPOCHS = 10
+NUM_EPOCHS = 100
 LEARNING_RATE = 0.001
 SAMPLE_RATE = 0.3  # ts
-net_dims = [INPUT_SIZE, 25, 25, OUTPUT_SIZE]
+net_dims = [INPUT_SIZE, 50, 50, OUTPUT_SIZE]
 
 
 def main():
     train_loader, test_loader = create_mpc_data_loaders(BATCH_SIZE)
-    # cnt = 0
-    # for x, y in train_loader:
-    #     print(x)
-    #     if cnt == 2:
-    #         break
-    #     cnt += 1
     model = Network(net_dims, activation=nn.ReLU).net
     model = model.cuda()
     criterion = nn.MSELoss()
@@ -41,9 +35,7 @@ def main():
             for x, ugt, u in zip(data, target, u_pred):
                 res_gt = system(x.unsqueeze(1), ugt.unsqueeze(1), SAMPLE_RATE)
                 res_pred = system(x.unsqueeze(1), u.unsqueeze(1), SAMPLE_RATE)
-                # print(res_gt)
                 sloss += criterion(res_gt, res_pred)
-            # print(res_pred)
             loss = sloss / data.size(0)
             mean_loss += loss
             optimizer.zero_grad()

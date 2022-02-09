@@ -8,10 +8,10 @@ addpath('C:/Program Files/Mosek/9.3/toolbox/R2015a');
 addpath('C:/Program Files/Mosek/9.3/toolbox/R2015aom');
 % mkdir ./output/Figure
 
-%% 6D quadrotor model (ts = 0.1).
+%% 6D quadrotor model 
 ts = 0.3;
 % Reachability iteration numbers
-N = 3;
+N = 2;
 
 g = 9.81;
 Ac = [0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1; zeros(3,6)];
@@ -44,11 +44,30 @@ net = convert_nnmpc_to_net(weights, biases, 'relu', []);
 %% SDP setup
 % Initial state set.
 R = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01];
-X0_ell  = ellipsoid( [3.4; 3.4; 3.4; -0.02; 0.46; -0.6],...
+X0_ell  = ellipsoid( [-3; -2; -2; 0.02; 0.46; 0.6],...
     blkdiag(R(1)^2,R(2)^2,R(3)^2,R(4)^2,R(5)^2,R(6)^2) );
 
-avoid_set = create_3d_shape(0.05,0.06,0.05,0.06,0.05,0.06);
-goal_set = create_3d_shape(2.5,3.5,2.5,3.5,2.5,3.5);
+
+%% Gaussian distribution
+X0_3d = projection(X0_ell,[1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0]');
+[iq,iQ] = double(X0_3d);
+iQ = sqrtm(iQ+eye(3)*1e-6);
+step = (iq(1)-iQ(1,1))/100;
+mu = iq';
+Sigma = iQ;
+X_init = iq(1)-iQ(1,1):0.001:iq(1)+iQ(1,1);
+Y_init = iq(2)-iQ(2,2):0.001:iq(2)+iQ(2,2);
+Z_init = iq(3)-iQ(3,3):0.001:iq(3)+iQ(3,3);
+[X, Y, Z] = meshgrid(X_init, Y_init, Z_init);
+V = [X(:), Y(:), Z(:)];
+f = mvnpdf(V, mu, Sigma);
+f = reshape(f, length(X), length(Y), length(Z));
+
+return 
+
+%% remaining configs
+avoid_set = create_3d_shape(1.05,1.06,1.05,1.06,1.05,1.06);
+goal_set = create_3d_shape(-0.5,0.5,-0.5,0.5,-0.5,0.5);
 
 repeated = true;
 mode = 'optimization';
@@ -83,6 +102,7 @@ for i = 1:N
     Ug_t = []; % One-step control set at time t
     for x = Xg_cell{end}
         u = fwd_prop(net,x);
+        % x_next = A*x + B*u + E*g;
         x_next = A*x + B*proj(u,sys.ulb,sys.uub) + E*g;
         Xg_t = [Xg_t x_next];
         Ug_t = [Ug_t u];
@@ -136,6 +156,9 @@ for i = 1:ell_length
     ell_3d = projection(ell_seq_tmp,[1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0]');
     
     [eq,eQ] = double(ell_3d);
+    
+    % volume = sqrt(det(eQ))
+    
     Q = sqrtm(eQ+eye(3)*1e-6);
     Nsample = 20000;
     X_sample_box = [eq(1)+Q(1,1)*(1-2*rand(1,Nsample));
@@ -150,7 +173,6 @@ for i = 1:ell_length
             FRS_xyz_tmp = [FRS_xyz_tmp s];
         end
     end
-    
     
     FRS_xyz_tmp = FRS_xyz_tmp';
     FRS_xyz{end+1} = [FRS_xyz_tmp(:,1) FRS_xyz_tmp(:,2) FRS_xyz_tmp(:,3)];

@@ -20,7 +20,7 @@ def main():
     """System model setting"""
     g = 9.81
     ts = 0.3
-    sdp_iter = 12
+    sdp_iter = 2
     # Continuous A, B matrix
     Ac = matlab.double([[0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 1, 0],
@@ -38,13 +38,13 @@ def main():
 
     # Initial state set
     q0 = matlab.double([[4.1], [4.44], [4.4], [-0.5], [-0.5], [-0.5]])
-
     # q0 = matlab.double([[2.1], [2.44], [2.4], [-0.5], [-0.5], [-0.5]])
+
     Q0 = matlab.double([0.05, 0.05, 0.05, 0.01, 0.01, 0.01])
     is_init = True  # The initial state set is only needed at the first time
 
     # Avoiding set and Goal set
-    avoid_set_xyz = matlab.double([1.1, 1.2, 1.1, 1.2, 1.1, 1.2]) # avoid set
+    avoid_set_xyz = matlab.double([1.1, 1.2, 1.1, 1.2, 1.1, 1.2])  # avoid set
 
     # room dictionary
     room_goal_dict = {
@@ -54,6 +54,16 @@ def main():
     }
 
     process_counter = 0
+    edge_list = []
+    for e in buchi.buchi_graph.edges:
+        edge_list.append(e)
+        print(e, buchi.buchi_graph.edges[e])
+    print(edge_list)
+    final_state = edge_list[-1]
+    if final_state[0] == final_state[1] and final_state[1] != 'accept_all':
+        print(type(buchi.buchi_graph.edges[final_state]['AP']))
+        print("This command includes '[]' ")
+
     while currentNBAState != acceptingNBAState:
         process_counter += 1
         nextNBAState = buchi.get_next_NBA_state(currentNBAState, acceptingNBAState)
