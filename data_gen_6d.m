@@ -7,7 +7,7 @@ setenv('SNOPT_LICENSE','D:/Software/snopt7_matlab/snopt7.lic');
 %% important Varables
 ts = 0.3; % samping rate
 N = 20; % horizon
-Xnmpc = [0;0;0;0;0;0];
+Xnmpc = [1;1;0;0;0;0];
 
 %% system dynamics
 g = 9.81;
@@ -51,7 +51,7 @@ count = 0;
 
 %% Test with rejection 
 k = 0;
-while k < 1500
+while k < 1000
     k
     % x0 = [3.2-rand/5; 3.2-rand/5; 3.2-rand/5; 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)];
     % select some out of distribution datapoints to enlarge the coverage of the dataset volume
@@ -95,20 +95,20 @@ end
 %     end
 % end
 
-X_train_nnmpc = X;
-y_train_nnmpc = y;
-save quad_mpc_x X_train_nnmpc
-save quad_mpc_y y_train_nnmpc
+% X_train_nnmpc = X;
+% y_train_nnmpc = y;
+% save quad_mpc_x X_train_nnmpc
+% save quad_mpc_y y_train_nnmpc
 
 
 
 %% with model SOL
-% load quad_mpc_x_333000
-% load quad_mpc_y_333000
+% load quad_mpc_x_440000
+% load quad_mpc_y_440000
 % for k = 1:1
 %     k
-%     % x = X_train_nnmpc(k,:)'
-%     x = [3+rand; 3+rand; 3+rand; 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)]
+%     x = X_train_nnmpc(k,:)'
+%     % x = [3+rand; 3+rand; 3+rand; 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)]
 %     % x = [3+rand/100; 3+rand/100; 3+rand/100; 0.1; 0.1; 0.1]
 %     % x = [1.04; 1.28; 0.87; -0.5; -0.9; -0.4]
 %     % x = [2;2;2;1;0;0]

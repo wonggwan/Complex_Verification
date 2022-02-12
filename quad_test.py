@@ -5,8 +5,16 @@ from util.train_helper import Network, system
 
 HORIZON = 20
 SAMPLE_RATE = 0.3  # ts
-net_dims = [6, 50, 50, 3]
+net_dims = [6, 100, 50, 3]
 
+"""
+2.2091
+    2.2488
+    2.2195
+   -1.0248
+   -0.9896
+   -1.0325
+"""
 
 def main():
     model = Network(net_dims, activation=nn.ReLU).net
@@ -14,7 +22,7 @@ def main():
     checkpoint = torch.load('./output/quad_mpc_py.pth')
     model.load_state_dict(checkpoint)
 
-    test_val = np.array([-3, -2, -2, -0.7803, 0.4403, 0.5851])
+    test_val = np.array([4.5,4.5,0.8,0,0,0])
     x = torch.FloatTensor(test_val).cuda()
     print(x)
     x = x.unsqueeze(0)

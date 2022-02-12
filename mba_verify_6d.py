@@ -23,7 +23,7 @@ def main():
     """System model setting"""
     g = 9.81
     ts = 0.3
-    sdp_iter = 8
+    sdp_iter = 5
     # Continuous A, B matrix
     Ac = matlab.double([[0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 1, 0],
@@ -40,19 +40,19 @@ def main():
     Ec = matlab.double([[0], [0], [0], [0], [0], [-1]])
 
     # Initial state set
-    q0 = [[4.3], [4.3], [4.3], [-0.5], [-0.5], [-0.5]]
+    q0 = [[4.5], [4.5], [4.5], [0], [0], [0]]
+    # q0 = [[1], [1], [1], [0], [0], [0]]
     Q0 = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01]
-
-    RERUN_Q = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01]  # reshape the ellipsoid in future ellipsoid if RERUN needed
 
     # room dictionary
     room_goal_dict = {
         '0': [-0.5, 0.5, -0.5, 0.5, -0.5, 0.5],
         '1': [0.5, 1.5, 0.5, 1.5, 0.5, 1.5],
-        '2': [1.5, 2.5, 1.5, 2.5, 1.5, 2.5],
-        '3': [2.5, 3.5, 2.5, 3.5, 2.5, 4.0],
-        '4': [1.3, 1.4, 1.3, 1.4, 1.3, 1.4],
-        '5': [1.1, 1.2, 1.1, 1.2, 1.1, 1.2]
+        '2': [1.5, 3.0, 1.5, 3.0, 1.5, 2.7],
+        '3': [3.0, 3.7, 3.0, 3.5, 2.7, 4.0],
+        '4': [-1.3, -1.4, -1.3, -1.4, -1.3, -1.4],
+        '5': [-1.1, -1.2, -1.1, -1.2, -1.1, -1.2],
+        '6': [3.5, 4.5, 3.5, 4.5, -0.5, 0.5]
     }
 
     # Find the avoiding room information
@@ -69,8 +69,8 @@ def main():
                 avoid_set_xyz.append(room_goal_dict[sub[2:]])  # !e[index], we only need index
     avoid_set_xyz = matlab.double(avoid_set_xyz)
 
-    LAST_SUCCESS_q = q0   # The last successful ellipsoid info is defined here
-    LAST_SUCCESS_Q = block_diag(Q0[0]**2, Q0[1]**2, Q0[2]**2, Q0[3]**2, Q0[4]**2, Q0[5]**2).tolist()
+    LAST_SUCCESS_q = q0  # The last successful ellipsoid info is defined here
+    LAST_SUCCESS_Q = block_diag(Q0[0] ** 2, Q0[1] ** 2, Q0[2] ** 2, Q0[3] ** 2, Q0[4] ** 2, Q0[5] ** 2).tolist()
     while currentNBAState != acceptingNBAState:
         process_counter += 1
         nextNBAState = buchi.get_next_NBA_state(currentNBAState, acceptingNBAState)
@@ -87,7 +87,6 @@ def main():
         FINAL_FAIL_JUDGE_FLAG = 0
         RETRY_SUCCESS_FLAG = 0
 
-        print("LAST SUCCESS ->", LAST_SUCCESS_Q)
         q = matlab.double(LAST_SUCCESS_q)
         Q = matlab.double(LAST_SUCCESS_Q)
 
@@ -119,14 +118,40 @@ def main():
             """
             print("\nSub-Task {} is not satisfied".format(room_num))
             PREV_q, PREV_Q = LAST_SUCCESS_q, LAST_SUCCESS_Q
+            SPEED_SUB_MATRIX = np.array(LAST_SUCCESS_Q)[3:6, 3:6]  # RE-USE SPEED FROM PREVIOUS TASK
+            RERUN_Q_TMP = [0.01, 0.01, 0.01]
+            optimal_ratio = 0
 
             while FINAL_FAIL_JUDGE_FLAG != 1 and RETRY_SUCCESS_FLAG != 1:
-                RERUN_Q_DIAG = block_diag(RERUN_Q[0] ** 2, RERUN_Q[1] ** 2, RERUN_Q[2] ** 2,
-                                          RERUN_Q[3] ** 2, RERUN_Q[4] ** 2, RERUN_Q[5] ** 2).tolist()
+                print("\n\n--------------------------------------")
                 process_counter += 1
                 RERUN_COUNTER += 1
-                print("\n\n--------------------------------------")
-                print("Retrying Sub-Task {} ====> Try.{}\n".format(room_num, RERUN_COUNTER))
+                print("Retrying Sub-Task {} ====> Try No.{}\n".format(room_num, RERUN_COUNTER))
+
+                RERUN_Q_DIAG = block_diag(RERUN_Q_TMP[0] ** 2, RERUN_Q_TMP[1] ** 2,
+                                          RERUN_Q_TMP[2] ** 2, SPEED_SUB_MATRIX).tolist()
+                new_volume = np.sqrt(
+                    np.linalg.det(np.array(block_diag(RERUN_Q_TMP[0] ** 2, RERUN_Q_TMP[1] ** 2, RERUN_Q_TMP[2] ** 2))))
+                old_volume = np.sqrt(np.linalg.det(np.array(LAST_SUCCESS_Q)[0:3, 0:3]))
+                volume_ratio = new_volume / old_volume
+
+                print("Current ellipsoid volume ratio is: {}".format(volume_ratio))
+
+                print("Current denominator size: {}".format(2))
+
+                if volume_ratio >= 1:
+                    print(RERUN_Q_TMP)
+                    print("\nVolume ratio >= 1")
+                    print("\nCurrent retry ended, use result from previous iteration")
+                    process_counter -= 1
+                    print("\n Process_counter will be switched back to {}".format(process_counter))
+                    print("\nSub-Task {} is satisfied after retry {}".format(room_num, RERUN_COUNTER - 1))
+                    currentNBAState = nextNBAState
+                    LAST_SUCCESS_q = matlab.double(PREV_q)
+                    LAST_SUCCESS_Q = matlab.double(PREV_Q)
+                    print("Optimal ratio is {}".format(optimal_ratio))
+                    break
+
                 eng = matlab.engine.start_matlab()
                 goal_set_xyz = matlab.double(room_goal_dict[room_num])
                 cur_controller = './output/quad_mpc_' + str(room_num) + '.mat'
@@ -149,26 +174,29 @@ def main():
                             exit(1)
                 if is_satisfied:
                     # Succeeded only after the 1st time the ellipsoid is re-applied
-                    print("\nSub-Task {} is satisfied for the {} retry".format(room_num, RERUN_COUNTER))
+                    print("\nSub-Task {} is satisfied for the No.{} retry".format(room_num, RERUN_COUNTER))
                     print("Enlarge shape of initial ellipsoid and rerun test")
                     PREV_q = res_q
                     PREV_Q = res_Q
                     success_Q = np.array(LAST_SUCCESS_Q)
-                    print(success_Q)
-                    x = RERUN_Q[0] + abs(math.sqrt(success_Q[0, 0])) / 4
-                    y = RERUN_Q[1] + abs(math.sqrt(success_Q[1, 1])) / 4
-                    z = RERUN_Q[2] + abs(math.sqrt(success_Q[2, 2])) / 4
-                    RERUN_Q = [x, y, z, 0.01, 0.01, 0.01]
+                    # Only change the volume of the retry-initial-matrix
+                    RERUN_Q_TMP[0] += abs(math.sqrt(success_Q[0, 0]) - RERUN_Q_TMP[0]) / 2
+                    RERUN_Q_TMP[1] += abs(math.sqrt(success_Q[1, 1]) - RERUN_Q_TMP[1]) / 2
+                    RERUN_Q_TMP[2] += abs(math.sqrt(success_Q[2, 2]) - RERUN_Q_TMP[2]) / 2
+
+                    optimal_ratio = volume_ratio
+
                 if not is_satisfied and RERUN_COUNTER != 1:
                     # Survived some rerun test
                     # Failed at some future step
                     # Use the previous succeeded one
                     RETRY_SUCCESS_FLAG = 1
-                    print("\nSub-Task {} is satisfied after retry {}".format(room_num, RERUN_COUNTER))
+                    print("\nCurrent retry failed, use result from previous iteration")
+                    print("\nSub-Task {} is satisfied after retry {}".format(room_num, RERUN_COUNTER-1))
                     currentNBAState = nextNBAState
                     LAST_SUCCESS_q = matlab.double(PREV_q)
                     LAST_SUCCESS_Q = matlab.double(PREV_Q)
-                    print("Current Last Success q", LAST_SUCCESS_q)
+                    print("Optimal ratio is {}".format(optimal_ratio))
 
 
 if __name__ == '__main__':
