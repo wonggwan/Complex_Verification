@@ -23,7 +23,7 @@ def main():
     """System model setting"""
     g = 9.81
     ts = 0.3
-    sdp_iter = 5
+    sdp_iter = 9
     # Continuous A, B matrix
     Ac = matlab.double([[0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 1, 0],
@@ -40,8 +40,7 @@ def main():
     Ec = matlab.double([[0], [0], [0], [0], [0], [-1]])
 
     # Initial state set
-    q0 = [[4.5], [4.5], [4.5], [0], [0], [0]]
-    # q0 = [[1], [1], [1], [0], [0], [0]]
+    q0 = [[3.1], [3.1], [3.1], [-0.5], [-0.5], [-0.5]]
     Q0 = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01]
 
     # room dictionary
@@ -58,15 +57,11 @@ def main():
     # Find the avoiding room information
     avoid_set_xyz = []
     process_counter = 0
-    always_task = ''
     final_state = list(buchi.buchi_graph.edges)[-1]
     if final_state[0] == final_state[1] and final_state[1] != 'accept_all':
-        always_task = buchi.buchi_graph.edges[final_state]['AP']
-    if always_task:
-        clear_formula = always_task.replace(" ", "").replace("(", "").replace(")", "").split("&&")
-        for sub in clear_formula:
-            if sub.startswith('!'):
-                avoid_set_xyz.append(room_goal_dict[sub[2:]])  # !e[index], we only need index
+        if type(buchi.buchi_graph.edges[final_state]['truth']) is dict:
+            for element in list(buchi.buchi_graph.edges[final_state]['truth'].keys()):  # Find only []! type command
+                avoid_set_xyz.append(room_goal_dict[element[1]])
     avoid_set_xyz = matlab.double(avoid_set_xyz)
 
     LAST_SUCCESS_q = q0  # The last successful ellipsoid info is defined here
@@ -77,9 +72,16 @@ def main():
         print("nextNBAState chosen -> ", nextNBAState)
         nextAction = buchi.get_next_action(currentNBAState, nextNBAState)
         print("Next action -> {}".format(nextAction))
-        ok_Action = {k: v for (k, v) in nextAction.items() if v is True}
+
+        robot_set, ok_Action = set(), []
+        for key, values in nextAction.items():
+            robot_set.add(key[-1])
+            if values:
+                ok_Action.append(key)
         print("Runnable action -> {}".format(ok_Action))
-        sub_task, _ = random.choice(list(ok_Action.items()))
+        if len(robot_set) > 1:
+            print('multiple robots, needs to arrive simultaneously')
+        sub_task = random.choice(ok_Action)
         room_num = task_analyzer(sub_task)
 
         # RERUN related info

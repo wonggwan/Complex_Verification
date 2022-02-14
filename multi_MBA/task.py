@@ -25,7 +25,9 @@ class Task_6D(object):
     def __init__(self):
         # self.formula = '<>e2 && <>e3 && []!e4 && []!e5'
         # self.formula = '<>e2 && <>e6 && (!e2 U e6) && []!e4 && []!e5'
-        self.formula = '<>e2 && <>e3 && (!e2 U e3) && []!e5'
+        # self.formula = '<>e2 && <>e3 && (!e2 U e3) && []!e5 && []!e4'
+        self.formula = '<>e2 && <>e3 && []!e5'
+        # self.formula = '<>e1 && <>e2 && []!e4 && []!e5'
         # verify for each robot
         # robot move at the same time
         # every robot has to go to room at the same time (how many steps)
@@ -44,7 +46,7 @@ class Task_6D(object):
             3: ['(l3_1)', 1, 3],
             4: ['(l4_1)', 1, 3],
             5: ['(l5_1)', 1, 3],  # obstacles for robot 1 only
-            6: ['(l5_2)', 1, 3]
+            6: ['(l6_1)', 1, 3]
         }
         self.number_of_robots = 2
 
@@ -52,3 +54,7 @@ class Task_6D(object):
 def task_analyzer(task):
     room_num = task.split('l')[1].split('_')[0]
     return room_num
+
+
+def multi_robot_task_analyzer(task_list):
+    a = 1
