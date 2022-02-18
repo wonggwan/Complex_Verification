@@ -20,35 +20,37 @@ class Task(object):
         }
         self.number_of_robots = 1
 
+# self.formula = '<>e1 && <>e2 && []!e4 && []!e5'
+# verify for each robot
+# robot move at the same time
+# every robot has to go to room at the same time (how many steps)
+# number of successful steps must be the same
+#   -> iteration that reach-sdp need to take to the goal room
+# self.formula = '<>e1 && <>e2 && (!e1 U e2) && []!e5'
+# self.formula = '<> (e2 && e3)'
+# Next action -> {'l3_1': True, 'l2_2': True, 'l5_1': False}
+#  -> inspect next action to see which robot to verify
+#  -> if next action have multiple robots, then we will need to verify things at the same time
+# make the obstacles play a role
+
 
 class Task_6D(object):
     def __init__(self):
         # self.formula = '<>e2 && <>e3 && []!e4 && []!e5'
         # self.formula = '<>e2 && <>e6 && (!e2 U e6) && []!e4 && []!e5'
-        # self.formula = '<>e2 && <>e3 && (!e2 U e3) && []!e5 && []!e4'
-        self.formula = '<>e2 && <>e3 && []!e5'
-        # self.formula = '<>e1 && <>e2 && []!e4 && []!e5'
-        # verify for each robot
-        # robot move at the same time
-        # every robot has to go to room at the same time (how many steps)
-        # number of successful steps must be the same
-        #   -> iteration that reach-sdp need to take to the goal room
-        # self.formula = '<>e1 && <>e2 && (!e1 U e2) && []!e5'
-        # self.formula = '<> (e2 && e3)'
-        # Next action -> {'l3_1': True, 'l2_2': True, 'l5_1': False}
-        #  -> inspect next action to see which robot to verify
-        #  -> if next action have multiple robots, then we will need to verify things at the same time
-        # make the obstacles play a role
+        # self.formula = '<>e2 && <>e3 && (!e2 U e3) && []!e5 && []!e4 && []!e6'
+        self.formula = '<>e1 && <>e2 && []!e4 && []!e5'
+
         self.subformula = {
             0: ['(l0_1)', 1, 3],
             1: ['(l1_1)', 1, 3],
-            2: ['(l2_2)', 1, 3],
+            2: ['(l2_1)', 1, 3],
             3: ['(l3_1)', 1, 3],
             4: ['(l4_1)', 1, 3],
             5: ['(l5_1)', 1, 3],  # obstacles for robot 1 only
             6: ['(l6_1)', 1, 3]
         }
-        self.number_of_robots = 2
+        self.number_of_robots = 1
 
 
 def task_analyzer(task):
@@ -56,5 +58,7 @@ def task_analyzer(task):
     return room_num
 
 
-def multi_robot_task_analyzer(task_list):
-    a = 1
+def multi_robot_task_analyzer(task):
+    room_num = task.split('l')[1].split('_')[0]
+    robot_num = task.split('_')[1]
+    return robot_num, room_num

@@ -7,7 +7,7 @@ setenv('SNOPT_LICENSE','D:/Software/snopt7_matlab/snopt7.lic');
 %% important Varables
 ts = 0.3; % samping rate
 N = 20; % horizon
-Xnmpc = [1;1;0;0;0;0];
+Xnmpc = [2;3;2;0;0;0];
 
 %% system dynamics
 g = 9.81;
@@ -51,11 +51,11 @@ count = 0;
 
 %% Test with rejection 
 k = 0;
-while k < 1000
+while k < 500
     k
     % x0 = [3.2-rand/5; 3.2-rand/5; 3.2-rand/5; 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)];
     % select some out of distribution datapoints to enlarge the coverage of the dataset volume
-    x0 = [7*(1-2*rand); 7*(1-2*rand); 7*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)];
+    x0 = [5*(1-2*rand); 5*(1-2*rand); 5*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)];
     if x0(1)<xmin(1)|| x0(1)>xmax(1) || x0(2)<xmin(2) || x0(2)>xmax(2) || x0(3)<xmin(3) || x0(3)>xmax(3)
         continue %reject this initial state
     end
@@ -95,16 +95,16 @@ end
 %     end
 % end
 
-% X_train_nnmpc = X;
-% y_train_nnmpc = y;
-% save quad_mpc_x X_train_nnmpc
-% save quad_mpc_y y_train_nnmpc
+X_train_nnmpc = X;
+y_train_nnmpc = y;
+save quad_mpc_x X_train_nnmpc
+save quad_mpc_y y_train_nnmpc
 
 
 
 %% with model SOL
-% load quad_mpc_x_440000
-% load quad_mpc_y_440000
+% load quad_mpc_x_242000
+% load quad_mpc_y_242000
 % for k = 1:1
 %     k
 %     x = X_train_nnmpc(k,:)'

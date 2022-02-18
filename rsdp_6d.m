@@ -1,7 +1,7 @@
 %% Reach-SDP: 6D Quadrotor Example
-function [is_satisfied, res_q, res_Q] = rsdp_6d(Ac, Bc, Ec, g, ts, q0, Q0, ...
-                                        avoid_set_xyz, goal_set_xyz, cur_controller,...
-                                        process_ind, sdp_iter)
+function [is_satisfied, res_q, res_Q, success_iter] = rsdp_6d(Ac, Bc, Ec, g, ts, q0, Q0, ...
+                                                          avoid_set_xyz, goal_set_xyz, cur_controller,...
+                                                          process_ind, sdp_iter)
 %% System Parameters
 addpath('./util')
 addpath('./output');
@@ -142,10 +142,12 @@ for i = 1:ell_length
 end
 
 avoid_set_cell = {};
-for i = 1: height(avoid_set_xyz)
-    aset = avoid_set_xyz(i,:);
-    avoid_set = create_3d_shape(aset(1),aset(2),aset(3),aset(4),aset(5),aset(6));
-    avoid_set_cell{end+1} = avoid_set;
+if ~isempty(avoid_set_xyz)
+    for i = 1: height(avoid_set_xyz)
+        aset = avoid_set_xyz(i,:);
+        avoid_set = create_3d_shape(aset(1),aset(2),aset(3),aset(4),aset(5),aset(6));
+        avoid_set_cell{end+1} = avoid_set;
+    end
 end
 
 gset = goal_set_xyz;
@@ -159,9 +161,11 @@ zlabel('p_z')
 
 if is_satisfied
     next_ell = ell_seq_vec(res_index);
+    success_iter = res_index;
     next_ell
 else
     next_ell = X0_ell;
+    success_iter = -1;
     next_ell
 end
 [res_q, res_Q] = double(next_ell);

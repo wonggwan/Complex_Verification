@@ -36,8 +36,8 @@ def extract_weights(net):
 
 
 def create_mpc_data_loaders(BATCH_SIZE):
-    xmat = scipy.io.loadmat('./output/quad_mpc_x_440000.mat')['X_train_nnmpc']
-    ymat = scipy.io.loadmat('./output/quad_mpc_y_440000.mat')['y_train_nnmpc']
+    xmat = scipy.io.loadmat('./output/quad_mpc_x_232000.mat')['X_train_nnmpc']
+    ymat = scipy.io.loadmat('./output/quad_mpc_y_232000.mat')['y_train_nnmpc']
 
     # reduce size of dataset
     # xmat = xmat[:1000]

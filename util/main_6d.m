@@ -11,7 +11,7 @@ addpath('C:/Program Files/Mosek/9.3/toolbox/R2015aom');
 %% 6D quadrotor model 
 ts = 0.3;
 % Reachability iteration numbers
-N = 7;
+N = 6;
 
 g = 9.81;
 Ac = [0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1; zeros(3,6)];
@@ -36,19 +36,20 @@ sys.e = g;
 sys.ulb = [-pi/9;-pi/9;0];
 sys.uub = [ pi/9; pi/9;2*g];
 
-load quad_mpc
+load quad_mpc_6
+
 
 net = convert_nnmpc_to_net(weights, biases, 'relu', []);
 
 
 %% SDP setup
 % Initial state set.
-R = [0.04, 0.04, 0.04, 0.01, 0.01, 0.01];
-X0_ell  = ellipsoid( [-1; -1; -1; 0.02; 0.46; 0.6],...
+R = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01];
+X0_ell  = ellipsoid( [3.1; 3.5; 3.1; -0.5; -0.5; -0.5],...
     blkdiag(R(1)^2,R(2)^2,R(3)^2,R(4)^2,R(5)^2,R(6)^2) );
 
 avoid_set = create_3d_shape(1.05,1.06,1.05,1.06,1.05,1.06);
-goal_set = create_3d_shape(-0.5,0.5,-0.5,0.5,-0.5,0.5);
+goal_set = create_3d_shape(1.5,2.5,3.5,4.5,1.5,2.5);
 
 %% Gaussian distribution
 % probably not that useful now

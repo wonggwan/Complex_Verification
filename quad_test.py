@@ -5,7 +5,7 @@ from util.train_helper import Network, system
 
 HORIZON = 20
 SAMPLE_RATE = 0.3  # ts
-net_dims = [6, 100, 50, 3]
+net_dims = [6, 35, 35, 3]
 
 """
 2.2091
@@ -16,13 +16,14 @@ net_dims = [6, 100, 50, 3]
    -1.0325
 """
 
+
 def main():
     model = Network(net_dims, activation=nn.ReLU).net
     model = model.cuda()
     checkpoint = torch.load('./output/quad_mpc_py.pth')
     model.load_state_dict(checkpoint)
 
-    test_val = np.array([4.5,4.5,0.8,0,0,0])
+    test_val = np.array([2, 0, 3, -0.5, -0.5, -0.5])
     x = torch.FloatTensor(test_val).cuda()
     print(x)
     x = x.unsqueeze(0)
