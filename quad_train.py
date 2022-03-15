@@ -11,7 +11,7 @@ INPUT_SIZE = 6
 OUTPUT_SIZE = 3
 HORIZON = 20
 BATCH_SIZE = HORIZON
-NUM_EPOCHS = 100
+NUM_EPOCHS = 1
 LEARNING_RATE = 0.001
 SAMPLE_RATE = 0.3  # ts
 net_dims = [INPUT_SIZE, 30, 30, OUTPUT_SIZE]
@@ -19,6 +19,10 @@ net_dims = [INPUT_SIZE, 30, 30, OUTPUT_SIZE]
 
 def main():
     train_loader, test_loader = create_mpc_data_loaders(BATCH_SIZE)
+
+    for x, y in train_loader:
+        print(x)
+        break
 
     model = Network(net_dims, activation=nn.ReLU).net
     model = model.cuda()

@@ -23,7 +23,7 @@ def main():
     """System model setting"""
     g = 9.81
     ts = 0.3
-    sdp_iter = 9
+    sdp_iter = 7
     # Continuous A, B matrix
     Ac = matlab.double([[0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 1, 0],
@@ -40,17 +40,17 @@ def main():
     Ec = matlab.double([[0], [0], [0], [0], [0], [-1]])
 
     # Initial state set
-    q0 = [[3.1], [3.1], [3.1], [-0.5], [-0.5], [-0.5]]
+
+    q0 = [[0.3], [0.3], [0.4], [0.5], [0.5], [0.7]]
     Q0 = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01]
 
-    # room dictionary
     room_goal_dict = {
         '0': [-0.5, 0.5, -0.5, 0.5, -0.5, 0.5],
         '1': [0.5, 1.5, 0.5, 1.5, 0.5, 1.5],
-        '2': [1.5, 2.5, 1.8, 2.5, 1.5, 2.5],
-        '3': [2.5, 3.5, 2.5, 3.5, 2.7, 4.0],
+        '2': [1.5, 2.5, 1.5, 2.5, 1.5, 2.5],
+        '3': [2.5, 3.5, 2.5, 3.5, 2.5, 4.0],
         '4': [1.5, 1.7, 0.9, 1.1, 0, 1.8],
-        '5': [1.6, 1.8, 1.6, 1.8, 0, 1.8],
+        '5': [1.6, 1.8, 1.9, 2.0, 0, 1.8],
         '6': [1.5, 2.7, 2.5, 4, 1.5, 2.5]  # For [2,3,2]
     }
 
@@ -77,6 +77,8 @@ def main():
     robot_pos_dict_tmp = {}
     check_state = list(buchi.buchi_graph.edges)
     for state in check_state:
+        if isinstance( buchi.buchi_graph.edges[state]['truth'], str):
+            continue
         for key, value in buchi.buchi_graph.edges[state]['truth'].items():
             if value:
                 if key.split('_')[1] not in robot_pos_dict:
