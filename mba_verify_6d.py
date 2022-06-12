@@ -20,10 +20,11 @@ def main():
     acceptingNBAState = buchi.buchi_graph.graph['accept'][0]
     currentNBAState = buchi.buchi_graph.graph['init'][0]
 
+
     """System model setting"""
     g = 9.81
     ts = 0.3
-    sdp_iter = 7
+    sdp_iter = 4
     # Continuous A, B matrix
     Ac = matlab.double([[0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 1, 0],
@@ -41,17 +42,20 @@ def main():
 
     # Initial state set
 
-    q0 = [[0.3], [0.3], [0.4], [0.5], [0.5], [0.7]]
+    # q0 = [[0.4], [0.4], [0.3], [0.5], [0.5], [0.5]]
+    # Q0 = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01]
+    q0 = [[3.1], [3.2], [3.1], [0.95], [0], [0]]
     Q0 = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01]
 
+    # room dictionary
     room_goal_dict = {
         '0': [-0.5, 0.5, -0.5, 0.5, -0.5, 0.5],
         '1': [0.5, 1.5, 0.5, 1.5, 0.5, 1.5],
         '2': [1.5, 2.5, 1.5, 2.5, 1.5, 2.5],
         '3': [2.5, 3.5, 2.5, 3.5, 2.5, 4.0],
         '4': [1.5, 1.7, 0.9, 1.1, 0, 1.8],
-        '5': [1.6, 1.8, 1.9, 2.0, 0, 1.8],
-        '6': [1.5, 2.7, 2.5, 4, 1.5, 2.5]  # For [2,3,2]
+        '5': [1.6, 1.8, 2.5, 2.7, 0, 1.8],
+        '6': [0.6, 0.8, 0.2, 0.4, 0, 2]  # For [2,3,2]
     }
 
     # Find the avoiding room information
@@ -68,16 +72,17 @@ def main():
                     avoid_room_name[element.split('_')[1]] = []
                 avoid_dict[element.split('_')[1]].append(room_goal_dict[element.split('l')[1].split('_')[0]])
                 avoid_room_name[element.split('_')[1]].append(element.split('l')[1].split('_')[0])
-
-    for a in list(buchi.buchi_graph.edges):
-        print(a, buchi.buchi_graph.edges[a])
+    print("avoid_dict-> ", avoid_dict)
+    print("avoid_room_name -> ", avoid_room_name)
+    # for a in list(buchi.buchi_graph.edges):
+    #     print(a, buchi.buchi_graph.edges[a])
 
     # ROBOT INITIALIZATION POSITION DICTIONARY
     robot_pos_dict = {}
     robot_pos_dict_tmp = {}
     check_state = list(buchi.buchi_graph.edges)
     for state in check_state:
-        if isinstance( buchi.buchi_graph.edges[state]['truth'], str):
+        if isinstance(buchi.buchi_graph.edges[state]['truth'], str):
             continue
         for key, value in buchi.buchi_graph.edges[state]['truth'].items():
             if value:
@@ -91,7 +96,6 @@ def main():
         robot_pos_dict_tmp[key]['LAST_SUCCESS_q'] = q0
         robot_pos_dict_tmp[key]['LAST_SUCCESS_Q'] = block_diag(Q0[0] ** 2, Q0[1] ** 2, Q0[2] ** 2,
                                                                Q0[3] ** 2, Q0[4] ** 2, Q0[5] ** 2).tolist()
-    print(robot_pos_dict)
     while currentNBAState != acceptingNBAState:
         nextNBAState = buchi.get_next_NBA_state(currentNBAState, acceptingNBAState)
         print("nextNBAState chosen -> ", nextNBAState)
@@ -113,12 +117,13 @@ def main():
         for sub_task in ok_Action:
             robot_num, room_num = multi_robot_task_analyzer(sub_task)
             sub_task_robot_num_set.add(robot_num)
-            print("\n---------- <Robot {}> ----------".format(robot_num, room_num))
+            print("\n---------- <Robot {}> ----------".format(robot_num))
             process_counter += 1
             avoid_set_xyz = []
 
             if robot_num in avoid_dict:  # If avoid room is specified for this robot
                 avoid_set_xyz = matlab.double(avoid_dict[robot_num])
+            print(avoid_set_xyz)
             if robot_num in avoid_room_name:
                 print("Obstacles {} detected for robot {}".format(avoid_room_name[robot_num], robot_num))
             RERUN_COUNTER = 0
@@ -132,6 +137,17 @@ def main():
             Q = matlab.double(LAST_SUCCESS_Q)
             eng = matlab.engine.start_matlab()
             print("Current goal room -> {}".format(room_num))
+
+            ### Temporary script
+            if room_num == '1':
+                # print(room_goal_dict['1'])
+                tmp = []
+                tmp.append(room_goal_dict['2'])
+                avoid_set_xyz = matlab.double(tmp)
+                del tmp
+
+            ###
+            print("avoid: ", avoid_set_xyz)
             goal_set_xyz = matlab.double(room_goal_dict[room_num])
             cur_controller = './output/quad_mpc_' + str(room_num) + '.mat'
             print("Controller {} applied".format(cur_controller))

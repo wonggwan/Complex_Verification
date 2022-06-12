@@ -2,20 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="945c93ad-fa60-4c97-b9ce-3fc1d575fb3a" name="Changes" comment="New_Logic_runnable">
-      <change afterPath="$PROJECT_DIR$/plotfile.mat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/quad_data_gen.asv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/quad_data_gen.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_gen_6d.m" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/mba_verify_6d.py" beforeDir="false" afterPath="$PROJECT_DIR$/mba_verify_6d.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multi_MBA/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/multi_MBA/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next_ell.mat" beforeDir="false" afterPath="$PROJECT_DIR$/next_ell.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next_ell.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotfile.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/quad_data_gen.asv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/quad_data_gen.m" beforeDir="false" afterPath="$PROJECT_DIR$/quad_data_gen.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/quad_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/quad_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quad_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/quad_train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sample_1_run.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_6d_controller.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/main_6d.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/main_6d.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/train_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/train_helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsdp_6d.m" beforeDir="false" afterPath="$PROJECT_DIR$/rsdp_6d.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/solve_nmpc_quad.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/solve_nmpc_quad.m" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +51,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Files/wonggwan_github" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Padded_Analysis" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager" selected="Python.mba_verify_6d">
@@ -146,8 +142,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.mba_verify_6d" />
-        <item itemvalue="Python.quad_train" />
         <item itemvalue="Python.quad_test" />
+        <item itemvalue="Python.quad_train" />
         <item itemvalue="Python.mba_verify" />
       </list>
     </recent_temporary>
@@ -210,7 +206,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645219291694</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="New_Logic_runnable">
+      <created>1647355617861</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1647355617861</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="UnknownFeatures">

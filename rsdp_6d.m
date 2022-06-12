@@ -35,7 +35,7 @@ net = convert_nnmpc_to_net(weights, biases, 'relu', []);
 % R = Q0;
 % X0_ell = ellipsoid(q0, blkdiag(R(1)^2,R(2)^2,R(3)^2,R(4)^2,R(5)^2,R(6)^2))
 
-X0_ell = ellipsoid(q0, Q0)
+X0_ell = ellipsoid(q0, Q0);
 
 repeated = true;
 mode = 'optimization';
@@ -53,6 +53,8 @@ Ug_cell = {}; % Grid-based control sets
 [X0_q,X0_Q] = double(X0_ell);
 xQ = sqrtm(X0_Q+eye(6)*1e-6);
 [A0,b0] = ell_to_Ab(X0_ell);
+
+A0, b0
 Nsample = 20000;
 X_sample_box = [X0_q(1)+xQ(1,1)*(1-2*rand(1,Nsample));
                 X0_q(2)+xQ(2,2)*(1-2*rand(1,Nsample));

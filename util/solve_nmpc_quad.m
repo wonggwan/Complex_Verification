@@ -1,6 +1,7 @@
 function [feas, xOpt, uOpt, JOpt] = solve_nmpc_quad(ts,Q,R,N,umin,umax,xmin,xmax,x0, Xnmpc, P)
 % Solve the MPC problem for collision avoidance of a quadrotor
 % Define system dimensions
+
 NX = length(Q);
 NU = length(R);
 
@@ -26,6 +27,7 @@ for i = 1:N
 end
 
 % Terminal constraint
+
 constraints = [constraints, x_yal(:,N+1) == Xnmpc];
 % Set options for YALMIP and solver
 options = sdpsettings('verbose',0,'solver','snopt','usex0',0,'cachesolvers',0);

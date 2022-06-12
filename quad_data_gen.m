@@ -2,20 +2,14 @@
 clear all; close all; clc
 addpath('./util');
 addpath('./output');
-setenv('SNOPT_LICENSE','D:/Software/snopt7_matlab/snopt7.lic');
+setenv('SNOPT_LICENSE','D:/Software/snopt7_matlab/lib/snopt7.lic');
 
 %% important Varables
 ts = 0.3; % samping rate
-N = 20; % horizon
+N = 10; % horizon
 goal_max = [0.5;0.5;0.5]; % max value of goal room
 goal_min = [-0.5;-0.5;-0.5]; % min value of goal room
 goal_speed = [0; 0; 0];
-% o1_max = [1.7; 1.1; 1.8]; % avoid obstacle 1
-% o1_min = [1.5; 0.9; 0.0];
-% o1_max = [0.5; 0.5; 0.5]; % avoid obstacle 1
-% o1_min = [0; 0; 0];
-% o2_max = [1.8; 1.8; 1.8]; % avoid obstalce 2
-% o2_min = [1.6; 1.6; 0.0];
 
 %% system dynamics
 g = 9.81;
@@ -49,7 +43,7 @@ k = 0;
 while k < 800
     k
     % select some out of distribution datapoints to enlarge the coverage of the dataset volume
-    x0 = [7*(1-2*rand); 7*(1-2*rand); 7*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)];
+    x0 = [5*(1-2*rand); 5*(1-2*rand); 5*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand); 1*(1-2*rand)];
     if x0(1)<xmin(1)|| x0(1)>xmax(1) || x0(2)<xmin(2) || x0(2)>xmax(2) || x0(3)<xmin(3) || x0(3)>xmax(3)
         continue %reject this initial state
     end
@@ -65,7 +59,6 @@ while k < 800
             
             X = [X; x0'];
             y = [y; tan(uOpt(1,j)) tan(uOpt(2,j)) uOpt(3,j)];
-            
         end
         k = k + 1;
     end

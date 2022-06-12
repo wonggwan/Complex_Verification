@@ -21,28 +21,72 @@ write a accuracy checker for the trained NN controller on the dataset being used
 see which of these initial  state can end up being in the terminal constraint
 """
 
+# def main():
+#     model = Network(net_dims, activation=nn.ReLU).net
+#     model = model.cuda()
+#     checkpoint = torch.load('./output/quad_mpc_py.pth')
+#     model.load_state_dict(checkpoint)
+#
+#     train_loader, test_loader = create_mpc_data_loaders(BATCH_SIZE)
+#
+#     test_val = np.array([2, 0, 4, -0.5, -0.5, -0.5])
+#     x = torch.FloatTensor(test_val).cuda()
+#     print(x)
+#     x = x.unsqueeze(0)
+#
+#
+#
+#     for _ in range(HORIZON):
+#         x, u = x.squeeze(0), model(x).squeeze(0)
+#         res_gt = system(x.unsqueeze(1), u.unsqueeze(1), SAMPLE_RATE)
+#         print(res_gt)
+#         x = res_gt.unsqueeze(0).squeeze(2)
+#
+#
+# if __name__ == '__main__':
+#     main()
 
-def main():
-    model = Network(net_dims, activation=nn.ReLU).net
-    model = model.cuda()
-    checkpoint = torch.load('./output/quad_mpc_py.pth')
-    model.load_state_dict(checkpoint)
+# seeks = []
+# results = []
+#
+#
+# def gen(prefix, rest_length):
+#     if rest_length == 0:
+#         return
+#     for item in seeks:
+#         str = prefix + item
+#         results.append(str)
+#         gen(str, rest_length - 1)
+#
+# max = 4
+# seeks.append('A')
+# seeks.append('B')
+# gen("", max)
+# for item in results:
+#     print(item)
 
-    train_loader, test_loader = create_mpc_data_loaders(BATCH_SIZE)
+import numpy as np
+import scipy.spatial
+import matplotlib.pyplot as plt
 
-    test_val = np.array([2, 0, 4, -0.5, -0.5, -0.5])
-    x = torch.FloatTensor(test_val).cuda()
-    print(x)
-    x = x.unsqueeze(0)
-
-
-
-    for _ in range(HORIZON):
-        x, u = x.squeeze(0), model(x).squeeze(0)
-        res_gt = system(x.unsqueeze(1), u.unsqueeze(1), SAMPLE_RATE)
-        print(res_gt)
-        x = res_gt.unsqueeze(0).squeeze(2)
+# Define problem
+X_min = -np.array([1., 1.])
+X_max = np.array([1., 1.])
 
 
-if __name__ == '__main__':
-    main()
+def f(x):
+    return x
+
+
+# RandUP
+M = 100
+xs = np.random.uniform(low=X_max, high=X_min, size=(M, 2))
+ys = f(xs)
+hull = scipy.spatial.ConvexHull(ys)
+
+# Plot
+plt.scatter(ys[:, 0], ys[:, 1], color='b')
+for s in hull.simplices:
+    plt.plot(ys[s, 0], ys[s, 1], 'g')
+
+plt.show()
