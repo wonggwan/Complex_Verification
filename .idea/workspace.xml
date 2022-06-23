@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="945c93ad-fa60-4c97-b9ce-3fc1d575fb3a" name="Changes" comment="Ground_robot_data_generation">
-      <change afterPath="$PROJECT_DIR$/ground_train.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nneval_ground.py" afterDir="false" />
+    <list default="true" id="945c93ad-fa60-4c97-b9ce-3fc1d575fb3a" name="Changes" comment="Update">
+      <change afterPath="$PROJECT_DIR$/util/cosafe_setup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ground_data_gen.m" beforeDir="false" afterPath="$PROJECT_DIR$/ground_data_gen.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mba_verify_6d.py" beforeDir="false" afterPath="$PROJECT_DIR$/mba_verify_6d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quad_data_gen.m" beforeDir="false" afterPath="$PROJECT_DIR$/quad_data_gen.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quad_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/quad_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quad_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/quad_train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/train_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/train_helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multi_MBA/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/multi_MBA/task.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +48,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.nneval_ground">
+  <component name="RunManager" selected="Python.mba_verify_6d">
     <configuration name="ground_train" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Complex_Verification" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -161,11 +156,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.mba_verify_6d" />
         <item itemvalue="Python.nneval_ground" />
         <item itemvalue="Python.ground_train" />
         <item itemvalue="Python.quad_test" />
         <item itemvalue="Python.quad_train" />
-        <item itemvalue="Python.mba_verify_6d" />
       </list>
     </recent_temporary>
   </component>
@@ -241,7 +236,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655070487060</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Update">
+      <created>1655957610580</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1655957610581</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -265,6 +267,7 @@
     <MESSAGE value="New_Logic" />
     <MESSAGE value="New_Logic_runnable" />
     <MESSAGE value="Ground_robot_data_generation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ground_robot_data_generation" />
+    <MESSAGE value="Update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update" />
   </component>
 </project>
