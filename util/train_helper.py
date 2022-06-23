@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn as nn
 from scipy.io import savemat
@@ -35,13 +36,49 @@ def extract_weights(net):
     return weights, biases
 
 
-def create_mpc_data_loaders(BATCH_SIZE):
-    xmat = scipy.io.loadmat('./output/quad_mpc_x.mat')['X_train_nnmpc']
-    ymat = scipy.io.loadmat('./output/quad_mpc_y.mat')['y_train_nnmpc']
+def create_ground_data_loaders(BATCH_SIZE, data_folder_name, is_eval=False):
+    data_x_location = os.path.join(data_folder_name, 'ground_mpc_x.mat')
+    data_y_location = os.path.join(data_folder_name, 'ground_mpc_y.mat')
 
-    # reduce size of dataset
-    xmat = xmat[:100]
-    ymat = ymat[:100]
+    xmat = scipy.io.loadmat(data_x_location)['X_train_nnmpc']
+    ymat = scipy.io.loadmat(data_y_location)['y_train_nnmpc']
+
+    data_size = len(xmat)
+
+    class GroundDataset(Dataset):
+        def __init__(self, xmat, ymat):
+            self.xmat = xmat
+            self.ymat = ymat
+
+        def __len__(self):
+            return len(self.xmat)
+
+        def __getitem__(self, index):
+            image = torch.FloatTensor(self.xmat[index])
+            label = torch.Tensor(np.array(self.ymat[index]))
+
+            return image, label
+
+    train_set = GroundDataset(xmat[:int(0.8*data_size)], ymat[:int(0.8*data_size)])
+    test_set = GroundDataset(xmat[int(0.8*data_size):], ymat[int(0.8*data_size):])
+    train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0,
+                                               drop_last=True)
+    if is_eval:
+        test_loader = torch.utils.data.DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0,
+                                                  drop_last=True)
+    else:
+        test_loader = torch.utils.data.DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0,
+                                                  drop_last=True)
+    print(len(train_set), len(test_set))
+    return train_loader, test_loader
+
+
+def create_mpc_data_loaders(BATCH_SIZE, data_folder_name, is_eval=False):
+    data_x_location = os.path.join(data_folder_name, 'quad_mpc_x.mat')
+    data_y_location = os.path.join(data_folder_name, 'quad_mpc_y.mat')
+    xmat = scipy.io.loadmat(data_x_location)['X_train_nnmpc']
+    ymat = scipy.io.loadmat(data_y_location)['y_train_nnmpc']
+    data_size = len(xmat)
 
     class MyDataset(Dataset):
         def __init__(self, xmat, ymat):
@@ -57,21 +94,21 @@ def create_mpc_data_loaders(BATCH_SIZE):
 
             return image, label
 
-    train_set = MyDataset(xmat, ymat)
-    test_set = MyDataset(xmat, ymat)
+    train_set = MyDataset(xmat[:int(0.8 * data_size)], ymat[:int(0.8 * data_size)])
+    test_set = MyDataset(xmat[int(0.8 * data_size):], ymat[int(0.8 * data_size):])
     train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0,
                                                drop_last=False)
-    test_loader = torch.utils.data.DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0, drop_last=False)
+    if is_eval:
+        test_loader = torch.utils.data.DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0, drop_last=False)
+    else:
+        test_loader = torch.utils.data.DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0,
+                                                  drop_last=False)
     print(len(train_set))
     return train_loader, test_loader
 
 
 def train_6d_ver1(BATCH_SIZE, INPUT_SIZE, OUTPUT_SIZE, NUM_EPOCHS, optimizer):
     train_loader, test_loader = create_mpc_data_loaders(BATCH_SIZE)
-    # for x, y in train_loader:
-    #     for element in x:
-    #         print(element)
-    #     print("\n")
 
     net_dims = [INPUT_SIZE, 35, 35, OUTPUT_SIZE]
     model = Network(net_dims, activation=nn.ReLU).net
@@ -136,6 +173,65 @@ def test_model_6d(model, test_loader, horizon, ts):
             break
 
     eng.quit()
+
+
+def ground_eval(x, u, ts):
+    res = torch.zeros_like(x)
+    tmp = u[1] * ts / 2 + 1e-6
+    sinc = torch.sin(tmp * np.pi) / (tmp * np.pi)
+    cal = torch.multiply(u[0], sinc)
+    res[0] = x[0] + torch.multiply(cal, torch.cos(x[2] + tmp))
+    res[1] = x[1] + torch.multiply(cal, torch.sin(x[2] + tmp))
+    res[2] = x[2] + ts * u[1]
+    return res
+
+
+def ground_dym_test(xv, uv, ts):
+    res = torch.zeros_like(xv)
+    # for j, (x, u) in enumerate(zip(xv, uv)):
+    #     tmp = u[1] * ts / 2 + 1e-6
+    #     sinc = torch.sin(tmp * np.pi) / (tmp * np.pi)
+    #     cal = torch.multiply(u[0], sinc)
+    #     res[j, 0] = x[0] + torch.multiply(cal, torch.cos(x[2] + tmp))
+    #     res[j, 1] = x[1] + torch.multiply(cal, torch.sin(x[2] + tmp))
+    #     res[j, 2] = x[2] + ts * u[1]
+    tmp = uv[:, 1] * ts / 2 + 1e-6
+    sinc = torch.div(torch.sin(tmp * np.pi), (tmp * np.pi))
+    cal = torch.multiply(uv[:, 0], sinc)
+    res[:, 0] = xv[:, 0] + torch.multiply(cal, torch.cos(xv[:, 2] + tmp))
+    res[:, 1] = xv[:, 1] + torch.multiply(cal, torch.sin(xv[:, 2] + tmp))
+    res[:, 2] = xv[:, 2] + ts * uv[:, 1]
+    return res
+
+
+def ground_dym(xv, uv, ts):
+    res = torch.zeros_like(xv).cuda()
+    # for j, (x, u) in enumerate(zip(xv, uv)):
+    #     tmp = u[1] * ts / 2 + 1e-6
+    #     sinc = torch.sin(tmp * np.pi) / (tmp * np.pi)
+    #     cal = torch.multiply(u[0], sinc)
+    #     sinc, cal = sinc.cuda(), cal.cuda()
+    #     res[j, 0] = x[0] + torch.multiply(cal, torch.cos(x[2] + tmp))
+    #     res[j, 1] = x[1] + torch.multiply(cal, torch.sin(x[2] + tmp))
+    #     res[j, 2] = x[2] + ts * u[1]
+    tmp = uv[:, 1] * ts / 2 + 1e-6
+    sinc = torch.div(torch.sin(tmp * np.pi), (tmp * np.pi))
+    cal = torch.multiply(uv[:, 0], sinc)
+    res[:, 0] = xv[:, 0] + torch.multiply(cal, torch.cos(xv[:, 2] + tmp))
+    res[:, 1] = xv[:, 1] + torch.multiply(cal, torch.sin(xv[:, 2] + tmp))
+    res[:, 2] = xv[:, 2] + ts * uv[:, 1]
+    return res
+
+
+def dym_for_train(xv, uv, ts):
+    res = torch.zeros_like(xv).cuda()
+    tmp = uv[1] * ts / 2 + 1e-6
+    sinc = torch.sin(tmp * np.pi) / (tmp * np.pi)
+    cal = uv[0] * sinc
+    res[0] = xv[0] + cal * torch.cos(xv[2] + tmp)
+    res[1] = xv[1] + cal * torch.sin(xv[2] + tmp)
+    res[2] = xv[2] + ts * uv[1]
+    return res
 
 
 def system(x, u, ts):

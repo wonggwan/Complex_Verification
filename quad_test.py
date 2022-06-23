@@ -3,90 +3,70 @@ import torch.nn as nn
 import numpy as np
 from util.train_helper import Network, system, create_mpc_data_loaders
 
+
+def compare(x, min_region, max_region):
+    if min_region[0] <= x[0] <= max_region[0] and \
+            min_region[1] <= x[1] <= max_region[1] and \
+            min_region[2] <= x[2] <= max_region[2]:
+        return True
+    return False
+
+
 HORIZON = 20
 SAMPLE_RATE = 0.3  # ts
 net_dims = [6, 30, 30, 3]
 BATCH_SIZE = HORIZON
-"""
-2.2091
-    2.2488
-    2.2195
-   -1.0248
-   -0.9896
-   -1.0325
-"""
+data_folder_name = './output/con0'
+train_loader, test_loader = create_mpc_data_loaders(BATCH_SIZE, data_folder_name, is_eval=True)
+criterion = nn.MSELoss()
+model_location = './output/quad_mpc_py.pth'
+model = Network(net_dims, activation=nn.ReLU).net
+model.load_state_dict(torch.load(model_location))
+model = model.cuda()
+model.eval()
 
-"""
-write a accuracy checker for the trained NN controller on the dataset being used
-see which of these initial  state can end up being in the terminal constraint
-"""
+goal_min = np.array([-0.5, -0.5, -0.5, -1, -1, -1])  # max value of goal room
+goal_max = np.array([0.5, 0.5, 0.5, 1, 1, 1])  # min value of goal room
 
-# def main():
-#     model = Network(net_dims, activation=nn.ReLU).net
-#     model = model.cuda()
-#     checkpoint = torch.load('./output/quad_mpc_py.pth')
-#     model.load_state_dict(checkpoint)
-#
-#     train_loader, test_loader = create_mpc_data_loaders(BATCH_SIZE)
-#
-#     test_val = np.array([2, 0, 4, -0.5, -0.5, -0.5])
-#     x = torch.FloatTensor(test_val).cuda()
-#     print(x)
-#     x = x.unsqueeze(0)
-#
-#
-#
-#     for _ in range(HORIZON):
-#         x, u = x.squeeze(0), model(x).squeeze(0)
-#         res_gt = system(x.unsqueeze(1), u.unsqueeze(1), SAMPLE_RATE)
-#         print(res_gt)
-#         x = res_gt.unsqueeze(0).squeeze(2)
-#
-#
-# if __name__ == '__main__':
-#     main()
-
-# seeks = []
-# results = []
-#
-#
-# def gen(prefix, rest_length):
-#     if rest_length == 0:
-#         return
-#     for item in seeks:
-#         str = prefix + item
-#         results.append(str)
-#         gen(str, rest_length - 1)
-#
-# max = 4
-# seeks.append('A')
-# seeks.append('B')
-# gen("", max)
-# for item in results:
-#     print(item)
-
-import numpy as np
-import scipy.spatial
-import matplotlib.pyplot as plt
-
-# Define problem
-X_min = -np.array([1., 1.])
-X_max = np.array([1., 1.])
+goal_range = np.array([goal_min, goal_max])
 
 
-def f(x):
-    return x
+# num = 1
+# for i in range(num):
+#     x = np.random.uniform(low=goal_range[0, :], high=goal_range[1, :], size=(1, 6))
+#     x = torch.Tensor(x).cuda()
+#     for j in range(HORIZON):
+#         print(x)
+#         pred = model(x)
+#         pred = pred.squeeze(0).unsqueeze(1)
+#         x = x.squeeze(0).unsqueeze(1)
+#         x_next = system(x, pred, SAMPLE_RATE)
+#         x = x_next.squeeze(1).unsqueeze(0)
 
+check_arrival = 0
+acc_list = []
+print("length of test_loader: {}".format(len(test_loader)))
+for k, (data, target) in enumerate(test_loader):
+    state_list, pred_list, cnt, acc_cal = [], [], 0, 0
+    data, target = data.cuda(), target.cuda()
+    cur_x = data[0].unsqueeze(0)
+    state_list.append(cur_x)
+    for j in range(1, HORIZON):
+        pred = model(cur_x)
+        pred_list.append(pred)
+        pred = pred.squeeze(0).unsqueeze(1)
+        cur_x = cur_x.squeeze(0).unsqueeze(1)
+        x_next = system(cur_x, pred, SAMPLE_RATE)
+        state_list.append(x_next)
+        cur_x = x_next.squeeze(1).unsqueeze(0)
+        acc_cal += 1 - criterion(x_next, data[j].unsqueeze(1))
+        cnt += 1
+        # if j == HORIZON-1:
+        #     print(x_next)
+        if compare(x_next, goal_min, goal_max):
+            check_arrival += 1
+            break
+    acc_list.append(acc_cal / cnt)
 
-# RandUP
-M = 100
-xs = np.random.uniform(low=X_max, high=X_min, size=(M, 2))
-ys = f(xs)
-hull = scipy.spatial.ConvexHull(ys)
-
-# Plot
-plt.scatter(ys[:, 0], ys[:, 1], color='b')
-for s in hull.simplices:
-    plt.plot(ys[s, 0], ys[s, 1], 'g')
-
-plt.show()
+print('Trace accuracy: {}'.format(sum(acc_list) / len(acc_list)))
+print('Number of times in goal region: {}'.format(check_arrival))

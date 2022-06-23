@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="945c93ad-fa60-4c97-b9ce-3fc1d575fb3a" name="Changes" comment="New_Logic_runnable">
+    <list default="true" id="945c93ad-fa60-4c97-b9ce-3fc1d575fb3a" name="Changes" comment="Ground_robot_data_generation">
+      <change afterPath="$PROJECT_DIR$/ground_train.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nneval_ground.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ground_data_gen.m" beforeDir="false" afterPath="$PROJECT_DIR$/ground_data_gen.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mba_verify_6d.py" beforeDir="false" afterPath="$PROJECT_DIR$/mba_verify_6d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/multi_MBA/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/multi_MBA/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next_ell.mat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plotfile.mat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/quad_data_gen.asv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/quad_data_gen.m" beforeDir="false" afterPath="$PROJECT_DIR$/quad_data_gen.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/quad_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/quad_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsdp_6d.m" beforeDir="false" afterPath="$PROJECT_DIR$/rsdp_6d.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/solve_nmpc_quad.m" beforeDir="false" afterPath="$PROJECT_DIR$/util/solve_nmpc_quad.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quad_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/quad_train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/train_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/train_helper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,11 +50,11 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Padded_Analysis" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.mba_verify_6d">
-    <configuration name="mba_verify" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.nneval_ground">
+    <configuration name="ground_train" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Complex_Verification" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -67,7 +66,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mba_verify.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ground_train.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -89,6 +88,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mba_verify_6d.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="nneval_ground" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Complex_Verification" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="D:\Dropbox\Project\SDP_Validation\Complex_Verification\nneval_ground.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -141,10 +161,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.mba_verify_6d" />
+        <item itemvalue="Python.nneval_ground" />
+        <item itemvalue="Python.ground_train" />
         <item itemvalue="Python.quad_test" />
         <item itemvalue="Python.quad_train" />
-        <item itemvalue="Python.mba_verify" />
+        <item itemvalue="Python.mba_verify_6d" />
       </list>
     </recent_temporary>
   </component>
@@ -213,7 +234,14 @@
       <option name="project" value="LOCAL" />
       <updated>1647355617861</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Ground_robot_data_generation">
+      <created>1655070487060</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1655070487060</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -236,6 +264,7 @@
     <MESSAGE value="Changes" />
     <MESSAGE value="New_Logic" />
     <MESSAGE value="New_Logic_runnable" />
-    <option name="LAST_COMMIT_MESSAGE" value="New_Logic_runnable" />
+    <MESSAGE value="Ground_robot_data_generation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ground_robot_data_generation" />
   </component>
 </project>

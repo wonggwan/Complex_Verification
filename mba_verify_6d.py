@@ -20,7 +20,6 @@ def main():
     acceptingNBAState = buchi.buchi_graph.graph['accept'][0]
     currentNBAState = buchi.buchi_graph.graph['init'][0]
 
-
     """System model setting"""
     g = 9.81
     ts = 0.3
@@ -138,15 +137,15 @@ def main():
             eng = matlab.engine.start_matlab()
             print("Current goal room -> {}".format(room_num))
 
-            ### Temporary script
-            if room_num == '1':
-                # print(room_goal_dict['1'])
-                tmp = []
-                tmp.append(room_goal_dict['2'])
-                avoid_set_xyz = matlab.double(tmp)
-                del tmp
-
-            ###
+            # ### Temporary script
+            # if room_num == '1':
+            #     # print(room_goal_dict['1'])
+            #     tmp = []
+            #     tmp.append(room_goal_dict['2'])
+            #     avoid_set_xyz = matlab.double(tmp)
+            #     del tmp
+            #
+            # ###
             print("avoid: ", avoid_set_xyz)
             goal_set_xyz = matlab.double(room_goal_dict[room_num])
             cur_controller = './output/quad_mpc_' + str(room_num) + '.mat'

@@ -56,7 +56,7 @@ while k < 800
             u = [tan(uOpt(1,j)); tan(uOpt(2,j)); uOpt(3,j)];
             xNext = one_step_sim(x0,u,A,B,E,g);
             x0 = xNext;
-            
+
             X = [X; x0'];
             y = [y; tan(uOpt(1,j)) tan(uOpt(2,j)) uOpt(3,j)];
         end
@@ -96,7 +96,7 @@ Z = [0 0 1 0 0 0; 0 0 1 0 0 0; 1 1 1 0 1 1; 1 1 1 0 1 1];
 C='k';
 X = 2*xmax(1)*(X-0.5) + xc;
 Y = 2*xmax(2)*(Y-0.5) + yc;
-Z = 2*xmax(3)*(Z-0.5) + zc; 
+Z = 2*xmax(3)*(Z-0.5) + zc;
 fill3(X,Y,Z,C,'FaceAlpha',alpha);    % draw cube
 axis equal
 hold on
