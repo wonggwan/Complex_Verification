@@ -11,11 +11,11 @@ INPUT_SIZE = 6
 OUTPUT_SIZE = 3
 HORIZON = 20
 BATCH_SIZE = HORIZON
-NUM_EPOCHS = 120
-LEARNING_RATE = 0.01
+NUM_EPOCHS = 5
+LEARNING_RATE = 0.1
 SAMPLE_RATE = 0.3  # ts
 net_dims = [INPUT_SIZE, 30, 30, OUTPUT_SIZE]
-data_location = './output/con0'
+data_location = './output/con2'
 g = 9.81
 u_range = torch.tensor([[-np.pi/9, -np.pi/9, 0], [np.pi/9, np.pi/9, 2*g]]).cuda()
 

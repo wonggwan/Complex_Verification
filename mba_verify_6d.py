@@ -24,7 +24,7 @@ def main():
     """System model setting"""
     g = 9.81
     ts = 0.3
-    sdp_iter = 4
+    sdp_iter = 5
     # Continuous A, B matrix
     Ac = matlab.double([[0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 1, 0],
@@ -41,10 +41,7 @@ def main():
     Ec = matlab.double([[0], [0], [0], [0], [0], [-1]])
 
     # Initial state set
-
-    # q0 = [[0.4], [0.4], [0.3], [0.5], [0.5], [0.5]]
-    # Q0 = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01]
-    q0 = [[3.5], [3.5], [2.8], [-0.5], [-0.5], [-0.5]]
+    q0 = [[3.2], [3.2], [3.1], [-0.5], [-0.5], [-0.5]]
     Q0 = [0.05, 0.05, 0.05, 0.01, 0.01, 0.01]
 
     # room dictionary
@@ -54,26 +51,13 @@ def main():
         '2': [1.5, 2.5, 1.5, 2.5, 1.5, 2.5],
         '3': [2.5, 3.5, 2.5, 3.5, 2.5, 4.0],
         '4': [1.5, 1.7, 0.9, 1.1, 0, 1.8],
-        '5': [1.6, 1.8, 1.9, 2.0, 0, 1.8],
-        '6': [1.5, 2.7, 2.5, 4, 1.5, 2.5]  # For [2,3,2]
+        '5': [1.6, 1.8, 2.5, 2.7, 0, 1.8],
+        '6': [0.6, 0.8, 0.2, 0.4, 0, 2]  # For [2,3,2]
     }
 
     process_counter = 0
 
     # Find the avoiding room information
-    # avoid_dict = {}
-    # avoid_room_name = {}
-    # final_state = list(buchi.buchi_graph.edges)[-1]
-    # if final_state[0] == final_state[1] and final_state[1] != 'accept_all':
-    #     if type(buchi.buchi_graph.edges[final_state]['truth']) is dict \
-    #             and buchi.buchi_graph.edges[final_state]['truth'] is not None:
-    #         for element in list(buchi.buchi_graph.edges[final_state]['truth'].keys()):  # Find only []! type command
-    #             if element.split('_')[1] not in avoid_dict:
-    #                 avoid_dict[element.split('_')[1]] = []
-    #                 avoid_room_name[element.split('_')[1]] = []
-    #             avoid_dict[element.split('_')[1]].append(room_goal_dict[element.split('l')[1].split('_')[0]])
-    #             avoid_room_name[element.split('_')[1]].append(element.split('l')[1].split('_')[0])
-
     avoid_dict_, avoid_room_name_ = cosafe_obstacles(task.formula, room_goal_dict)
 
     print("avoid_dict-> ", avoid_dict_)
@@ -125,13 +109,6 @@ def main():
             process_counter += 1
             avoid_dict, avoid_room_name = update_obstacles_rt(avoid_dict_, avoid_room_name_,
                                                               room_goal_dict, cur_suc, room_num)
-
-            # avoid_set_xyz = []
-            # if robot_num in avoid_dict:  # If avoid room is specified for this robot
-            #     avoid_set_xyz = matlab.double(avoid_dict[robot_num])
-            # print(avoid_set_xyz)
-            # if robot_num in avoid_room_name:
-            #     print("Obstacles {} detected for robot {}".format(avoid_room_name[robot_num], robot_num))
             avoid_set_xyz = matlab.double(avoid_dict[room_num])
             print("Obstacles {} detected: {}".format(avoid_room_name_[room_num], avoid_dict[room_num]))
 
@@ -147,22 +124,17 @@ def main():
             eng = matlab.engine.start_matlab()
             print("Current goal room -> {}".format(room_num))
 
-            # ### Temporary script
-            # if room_num == '1':
-            #     # print(room_goal_dict['1'])
-            #     tmp = []
-            #     tmp.append(room_goal_dict['2'])
-            #     avoid_set_xyz = matlab.double(tmp)
-            #     del tmp
-
             print("avoid: ", avoid_set_xyz)
             goal_set_xyz = matlab.double(room_goal_dict[room_num])
             cur_controller = './output/quad_mpc_' + str(room_num) + '.mat'
             print("Controller {} applied".format(cur_controller))
             print("Goal room info: {}\n".format(goal_set_xyz))
+            start = time.time()
             is_satisfied, res_q, res_Q, success_iter = eng.rsdp_6d(Ac, Bc, Ec, g, ts, q, Q,
                                                                    avoid_set_xyz, goal_set_xyz,
                                                                    cur_controller, process_counter, sdp_iter, nargout=4)
+            end = time.time()
+            print("Time Elapsed in Reach-SDP: {}".format(end - start))
             eng.quit()
             # Regardless of successful or not, initial state will be updated at next time
             if is_satisfied:
@@ -171,6 +143,7 @@ def main():
                 robot_pos_dict_tmp[robot_num]['LAST_SUCCESS_q'] = matlab.double(res_q)
                 robot_pos_dict_tmp[robot_num]['LAST_SUCCESS_Q'] = matlab.double(res_Q)
                 RUN_TILL_SUCCESS_SET.add(success_iter)
+                cur_suc = room_num
                 continue
             else:
                 """
@@ -218,7 +191,6 @@ def main():
                         RUN_TILL_SUCCESS_SET.add(PREV_TILL_SUCCESS)
                         break
 
-                    eng = matlab.engine.start_matlab()
                     goal_set_xyz = matlab.double(room_goal_dict[room_num])
                     cur_controller = './output/quad_mpc_' + str(room_num) + '.mat'
                     print("Controller {} applied.".format(cur_controller))
@@ -226,10 +198,14 @@ def main():
 
                     q = matlab.double(LAST_SUCCESS_q)  # rerun always use the previous successful ellipsoid center
                     Q = matlab.double(RERUN_Q_DIAG)  # When re-run, shape matrix Q is updated
+                    eng = matlab.engine.start_matlab()
+                    start = time.time()
                     is_satisfied, res_q, res_Q, success_iter = eng.rsdp_6d(Ac, Bc, Ec, g, ts, q, Q,
                                                                            avoid_set_xyz, goal_set_xyz,
                                                                            cur_controller, process_counter, sdp_iter,
                                                                            nargout=4)
+                    end = time.time()
+                    print("Time Elapsed in Reach-SDP: {}".format(end - start))
                     eng.quit()
                     if not is_satisfied and RERUN_COUNTER == 1:
                         # Failed right at the 1st time after shrinking ellipsoid, then say it's failed
@@ -279,6 +255,8 @@ def main():
                 is_verification_failed = buchi.delete_transition(currentNBAState, nextNBAState)
                 if is_verification_failed:
                     print("\n[Buchi] No more transitions to accepting state, verification failed.")
+                    end_total = time.time()
+                    print("\nTime Elapsed in total: {}".format(end_total - start_total))
                     exit(1)
         else:
             if len(ok_Action) > 1:
@@ -297,6 +275,8 @@ def main():
                         is_verification_failed = buchi.delete_transition(currentNBAState, nextNBAState)
                         if is_verification_failed:
                             print("\n[Buchi] No more transitions to accepting state, verification failed.")
+                            end_total = time.time()
+                            print("\nTime Elapsed in total: {}".format(end_total - start_total))
                             exit(1)
             else:
                 # only single command needs to be satisfied.
@@ -304,6 +284,8 @@ def main():
                 for robot_num in list(sub_task_robot_num_set):
                     robot_pos_dict[robot_num]['LAST_SUCCESS_q'] = robot_pos_dict_tmp[robot_num]['LAST_SUCCESS_q']
                     robot_pos_dict[robot_num]['LAST_SUCCESS_Q'] = robot_pos_dict_tmp[robot_num]['LAST_SUCCESS_Q']
+    end_total = time.time()
+    print("\nTime Elapsed in total: {}".format(end_total - start_total))
 
 
 if __name__ == '__main__':

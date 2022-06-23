@@ -94,10 +94,10 @@ def create_mpc_data_loaders(BATCH_SIZE, data_folder_name, is_eval=False):
 
             return image, label
 
-    train_set = MyDataset(xmat[:int(0.8 * data_size)], ymat[:int(0.8 * data_size)])
+    train_set = MyDataset(xmat[:int(0.05 * data_size)], ymat[:int(0.05 * data_size)])
     test_set = MyDataset(xmat[int(0.8 * data_size):], ymat[int(0.8 * data_size):])
     train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0,
-                                               drop_last=False)
+                                               drop_last=True)
     if is_eval:
         test_loader = torch.utils.data.DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0, drop_last=False)
     else:
