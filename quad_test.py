@@ -16,17 +16,17 @@ HORIZON = 20
 SAMPLE_RATE = 0.3  # ts
 net_dims = [6, 30, 30, 3]
 BATCH_SIZE = HORIZON
-data_folder_name = './output/con0'
+data_folder_name = './output/con1'
 train_loader, test_loader = create_mpc_data_loaders(BATCH_SIZE, data_folder_name, is_eval=True)
 criterion = nn.MSELoss()
-model_location = './output/quad_mpc_py.pth'
+model_location = './output/con1/quad_mpc_py.pth'
 model = Network(net_dims, activation=nn.ReLU).net
 model.load_state_dict(torch.load(model_location))
 model = model.cuda()
 model.eval()
 
-goal_min = np.array([-0.5, -0.5, -0.5, -1, -1, -1])  # max value of goal room
-goal_max = np.array([0.5, 0.5, 0.5, 1, 1, 1])  # min value of goal room
+goal_min = np.array([0.5, 0.5, 0.5, -1, -1, -1])  # max value of goal room
+goal_max = np.array([1.5, 1.5, 1.5, 1, 1, 1])  # min value of goal room
 
 goal_range = np.array([goal_min, goal_max])
 

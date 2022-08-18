@@ -43,8 +43,8 @@ class Task_6D(object):
         # self.formula = '<>e1 && <>e2 && (!e2 U e1) && []!e4'
         # self.formula = '<>e1 && <>e2 && (!e2 U e1) && []!e6'
         # self.formula = '<>(e1 || e2) && []!e4 && []!e5'
-        # self.formula = '<>e1 && <>e2 && []!e4 && []!e5'
-        self.formula = '<>e1 && <>e2 && (!e2 U e1)'
+        self.formula = '<>e1 && <>e2 && []!e4 && []!e5'
+        # self.formula = '<>e1 && <>e2 && (!e2 U e1)'
 
         self.subformula = {
             0: ['(l0_1)', 1, 3],

@@ -6,12 +6,13 @@ setenv('SNOPT_LICENSE','D:/Software/snopt7_matlab/lib/snopt7.lic');
 % license only valid for 3 months
  
 %% important Varables
-ts = 0.1; % samping rate
-N = 12; % horizon
+ts = 1; % samping rate
+N = 15; % horizon
 
-goal_min = [0.5;0.5]; % min value of goal room
-goal_max = [1.5;1.5]; % max value of goal room
-goal_theta = pi/2;
+% goal_min = [-0.1;-0.1]; % min value of goal room
+% goal_max = [0.1;0.1]; % max value of goal room
+goal_min = [0.9;0.9]; % min value of goal room
+goal_max = [1.1;1.1]; % max value of goal room
 
 %% system dynamics
 Q = eye(3);
@@ -22,31 +23,39 @@ xmax = [ 5;  5; 2*pi];
 xmin = [-5; -5;    0];
 
 %% Control input constraints are for v and w (motion primitives)
-umin = [-1;-1];
-umax = [ 1; 1];
+umin = [-0.22;-0.15];
+umax = [ 0.22; 0.15];
 
 %% Generate data set
+
 X = [];
 y = [];
-k = []; % For training purpose
-count = 0;
+% load ground_mpc_x
+% load ground_mpc_y
+% 
+% X = X_train_nnmpc;
+% y = y_train_nnmpc;
+% 
+% size(X)
 
 %% TEST WITH OBSTALCES CHECKING
 cnt = 0;
-while cnt < 600
-    cnt
-    x0 = [5*(1-2*rand); 5*(1-2*rand); 2*pi*(1-rand)]
+while cnt < 1
+    
+    %x0 = [5*(1-2*rand); 5*(1-2*rand); 2*pi*(1-rand)];
+    % x0 = [3.2*(1-0.2*rand); 3.2*(1-0.2*rand); 3.94*(1-0.1*rand)];
+    x0 = [3.0; 3.0; 3.98]
     [feas, xOpt, uOpt, JOpt] = solve_ground(ts,Q,R,N,umin,umax,...
                                             xmin,xmax,x0,...
-                                            goal_min,goal_max,goal_theta);
+                                            goal_min,goal_max);
     if feas == 1
-        count = count + 1;
-        xOpt;
+        cnt
+        xOpt
         for j = 1:N
             [xNext, k1, k2, k3] = evolve(x0,uOpt(:,j),ts);
-            x0 = xNext;
             X = [X; x0'];
             y = [y; uOpt(:,j)'];
+            x0 = xNext;
             
         end
         cnt = cnt + 1;

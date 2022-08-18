@@ -36,6 +36,21 @@ def extract_weights(net):
     return weights, biases
 
 
+class GroundDataset(Dataset):
+    def __init__(self, xmat, ymat):
+        self.xmat = xmat
+        self.ymat = ymat
+
+    def __len__(self):
+        return len(self.xmat)
+
+    def __getitem__(self, index):
+        image = torch.FloatTensor(self.xmat[index])
+        label = torch.Tensor(np.array(self.ymat[index]))
+
+        return image, label
+
+
 def create_ground_data_loaders(BATCH_SIZE, data_folder_name, is_eval=False):
     data_x_location = os.path.join(data_folder_name, 'ground_mpc_x.mat')
     data_y_location = os.path.join(data_folder_name, 'ground_mpc_y.mat')
@@ -45,22 +60,9 @@ def create_ground_data_loaders(BATCH_SIZE, data_folder_name, is_eval=False):
 
     data_size = len(xmat)
 
-    class GroundDataset(Dataset):
-        def __init__(self, xmat, ymat):
-            self.xmat = xmat
-            self.ymat = ymat
+    train_set = GroundDataset(xmat[:int(0.8 * data_size)], ymat[:int(0.8 * data_size)])
+    test_set = GroundDataset(xmat[int(0.8 * data_size):], ymat[int(0.8 * data_size):])
 
-        def __len__(self):
-            return len(self.xmat)
-
-        def __getitem__(self, index):
-            image = torch.FloatTensor(self.xmat[index])
-            label = torch.Tensor(np.array(self.ymat[index]))
-
-            return image, label
-
-    train_set = GroundDataset(xmat[:int(0.8*data_size)], ymat[:int(0.8*data_size)])
-    test_set = GroundDataset(xmat[int(0.8*data_size):], ymat[int(0.8*data_size):])
     train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0,
                                                drop_last=True)
     if is_eval:
@@ -73,6 +75,21 @@ def create_ground_data_loaders(BATCH_SIZE, data_folder_name, is_eval=False):
     return train_loader, test_loader
 
 
+class MyDataset(Dataset):
+    def __init__(self, xmat, ymat):
+        self.xmat = xmat
+        self.ymat = ymat
+
+    def __len__(self):
+        return len(self.xmat)
+
+    def __getitem__(self, index):
+        image = torch.FloatTensor(self.xmat[index])
+        label = torch.Tensor(np.array(self.ymat[index]))
+
+        return image, label
+
+
 def create_mpc_data_loaders(BATCH_SIZE, data_folder_name, is_eval=False):
     data_x_location = os.path.join(data_folder_name, 'quad_mpc_x.mat')
     data_y_location = os.path.join(data_folder_name, 'quad_mpc_y.mat')
@@ -80,30 +97,17 @@ def create_mpc_data_loaders(BATCH_SIZE, data_folder_name, is_eval=False):
     ymat = scipy.io.loadmat(data_y_location)['y_train_nnmpc']
     data_size = len(xmat)
 
-    class MyDataset(Dataset):
-        def __init__(self, xmat, ymat):
-            self.xmat = xmat
-            self.ymat = ymat
-
-        def __len__(self):
-            return len(self.xmat)
-
-        def __getitem__(self, index):
-            image = torch.FloatTensor(self.xmat[index])
-            label = torch.Tensor(np.array(self.ymat[index]))
-
-            return image, label
-
-    train_set = MyDataset(xmat[:int(0.05 * data_size)], ymat[:int(0.05 * data_size)])
+    train_set = MyDataset(xmat[:int(0.8 * data_size)], ymat[:int(0.8 * data_size)])
     test_set = MyDataset(xmat[int(0.8 * data_size):], ymat[int(0.8 * data_size):])
     train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0,
                                                drop_last=True)
     if is_eval:
-        test_loader = torch.utils.data.DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0, drop_last=False)
+        test_loader = torch.utils.data.DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=0,
+                                                  drop_last=False)
     else:
         test_loader = torch.utils.data.DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0,
                                                   drop_last=False)
-    print(len(train_set))
+    print(len(xmat), len(train_set), len(test_set))
     return train_loader, test_loader
 
 
