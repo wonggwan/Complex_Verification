@@ -1,24 +1,12 @@
+## Verified Compositions of Neural Network Controllers for Temporal Logic Control Objectives
 
-    Go to room 1, then go to room 2 or 3, finally go to room 4, avoid room 5 all the time
-    Testing task:
-        sub1: go to room 1 while avoiding room 5
-        if success:
-            sub2: go to room 2 while avoiding room 5
-            if success:
-                sub3: go to room 4 while avoiding room 5
-                if success:
-                    Verified
-                else:
-                    failed
-            else:
-                sub4: go to room 3 while avoiding room 5
-                if success:
-                    sub5: go to room 4 while avoiding room 5
-                    if success:
-                        Verified
-                    else:
-                        failed
-                else:
-                    failed
-        else:
-            failed            
+
+***Jun Wang<sup>1</sup>, Samarth Kalluraya<sup>1</sup>, Yiannis Kantaros<sup>1</sup>***
+
+*Department of Electrical and Systems Engineering, Washington University in St Louis<sup>1</sup>*
+
+[IEEE CDC 2022](https://ieeexplore.ieee.org/abstract/document/9993010)
+
+Copyright 2022 [Kantaros Lab @ WashU](https://sites.wustl.edu/kantaroslab/). All rights reserved.
+
+        
